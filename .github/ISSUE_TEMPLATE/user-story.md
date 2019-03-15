@@ -1,8 +1,8 @@
 ---
 name: User Story
-about: Internal use only.
-title: User Story
-labels: enhancement
+about: Internal use only
+title: ''
+labels: ''
 assignees: ''
 
 ---
