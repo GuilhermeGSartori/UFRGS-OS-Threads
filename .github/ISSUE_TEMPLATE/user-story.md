@@ -7,15 +7,16 @@ assignees: ''
 
 ---
 
-**Description**
-As a
-I want to
-So that
+## Description
+**As a**
+**I want to**
+**So that**
 
-**Pre-conditions**
+## Pre-conditions
 - {Write pre-condition or _None_ if not applicable}
 
-
-**Acceptance Criteria**
-1. {Write criteria here}
-2. {Write criteria here}
+## Acceptance Criteria
+Scenario 1:
+**Given**
+**When**
+**Then**
