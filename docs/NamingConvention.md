@@ -1,6 +1,4 @@
-**Types** 
-
-Struct, Enum or Typedef.
+**Types** (_struct_, _enum_ or _typedef_)
 
     CamelCase
     e.g. NameOfType
