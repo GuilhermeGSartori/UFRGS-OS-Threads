@@ -1,21 +1,18 @@
 ## Individual Work
 
 **GuilhermeSSartori:**
-
-Functions & Testing:
+- Functions & Testing:
   - ccreate
   - cjoin
 
 **RenanKummer:**
-
-Functions & Testing:
+- Functions & Testing:
   - cyield
   - csetprio
   - cidentify
 
 **lizerb:**
-
-Functions & Testing:
+- Functions & Testing:
   - csem_init
   - cwait
   - csignal
