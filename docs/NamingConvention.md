@@ -1,11 +1,10 @@
 **Types**
-- Struct
-- Enum
-- Typedef
+Struct, Enum or Typedef.
 
     CamelCase
-    e.g. MyNotebook
+    e.g. NameOfType
 
 **Functions & Variables**
-    void function_name();
+     
+    void function_name();`
     int a_variable;
