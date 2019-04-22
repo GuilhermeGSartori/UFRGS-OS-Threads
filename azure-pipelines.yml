@@ -14,4 +14,7 @@ steps:
 - task: Bash@3
   inputs:
     filePath: './scripts/test_ci.sh'
-    failOnStderr: true
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: './pnpcunit_result.xml'
+    failTaskOnFailedTests: true
