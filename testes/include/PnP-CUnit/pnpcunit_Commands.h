@@ -6,14 +6,18 @@
 #ifndef PNPCUNIT_INCLUDE_COMMANDS_H
 #define PNPCUNIT_INCLUDE_COMMANDS_H
 
-#define PNPCUNIT_GET_HELP  "--pnpcunit-help"
-#define PNPCUNIT_RUN_TESTS "--pnpcunit-test"
+#define PNPCUNIT_GET_HELP   "--pnpcunit-help"
+#define PNPCUNIT_RUN_TESTS  "--pnpcunit-test"
+#define PNPCUNIT_VIEW_CLI   "--cli"
+#define PNPCUNIT_VIEW_JUNIT "--junit"
+
+#include "pnpcunit_TestRunner.h"
 
 typedef enum pnpcunit_Commands
 {
 	pnpcunit_COMMAND_NONE,          // No command or not applicable to Plug N' Play CUnit Framework.
 	pnpcunit_COMMAND_HELP,          // Display available commands for Plug N' Play CUnit Framework.
-	pnpcunit_COMMAND_RUN_ALL        // Run all test suites. 
+	pnpcunit_COMMAND_RUN_ALL        // Run all test suites.
 } pnpcunit_Commands;
 
 typedef enum pnpcunit_Verbosity
@@ -32,6 +36,16 @@ typedef enum pnpcunit_Verbosity
  * @return Command to be run.
  */
 pnpcunit_Commands pnpcunit_read_command(int argc, char** argv);
+
+/**
+ * Read the parameter passed by command line on how to display the test results.
+ *
+ * @param argc Number of arguments passed by Command Line.
+ * @param argv Array of arguments passed by Command Line.
+ * @return How to display the results.
+ */
+pnpcunit_ResultView pnpcunit_read_result_view(int argc, char** argv);
+
 
 /**
  * Display in Command Line all the available commands for Plug N' Play CUnit Framework.
