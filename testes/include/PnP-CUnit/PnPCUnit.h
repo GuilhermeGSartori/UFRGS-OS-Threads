@@ -38,7 +38,13 @@ void pnpcunit_display_framework_message();
 		pnpcunit_TestRunner *runner = pnpcunit_create_test_runner();\
 		set_up_test_runner_function(runner);\
 		pnpcunit_run_all_test_suites(runner);\
-		pnpcunit_display_results(pnpcunit_RESULTS_CLI, runner);\
+		\
+		pnpcunit_ResultView view = pnpcunit_read_result_view(argc, argv);\
+		\
+		if (view == pnpcunit_RESULTS_JUNIT)\
+			pnpcunit_display_results(pnpcunit_RESULTS_JUNIT, runner);\
+		else\
+			pnpcunit_display_results(pnpcunit_RESULTS_CLI, runner);\
 	}	
 
 
