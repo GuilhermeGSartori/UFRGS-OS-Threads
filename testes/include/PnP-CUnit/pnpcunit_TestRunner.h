@@ -14,12 +14,14 @@ typedef struct pnpcunit_TestRunner
 	int suites_to_run_size;
 	int suites_to_run_capacity;
 
+	int failures;
 	pnpcunit_Bool has_passed;
 } pnpcunit_TestRunner;
 
 typedef enum pnpcunit_ResultView
 {
-	pnpcunit_RESULTS_CLI
+	pnpcunit_RESULTS_CLI,
+	pnpcunit_RESULTS_JUNIT
 } pnpcunit_ResultView;
 
 /**
