@@ -18,7 +18,7 @@ steps:
 - task: Bash@3
   inputs:
     filePath: './scripts/test_ci_run.sh'
-    workingDirectory: './testes'
+    workingDirectory: './bin'
 - task: Bash@3
   inputs:
     filePath: './scripts/test_ci_clean.sh'
