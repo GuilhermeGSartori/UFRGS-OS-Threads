@@ -1,10 +1,9 @@
 cd ../testes
-make No_Support
+make all
 
 cd ../bin
-./Test_CThread.exe --pnpcunit-test
+./Test_CThread.exe --pnpcunit-test --junit
 result=$?
-
 
 cd ../testes
 make clean
