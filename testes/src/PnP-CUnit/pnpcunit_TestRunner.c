@@ -176,20 +176,16 @@ void display_results_in_command_line(pnpcunit_TestRunner *runner)
 	for (int i = 0; i < runner->suites_to_run_size; i++)
 	{
 		pnpcunit_TestSuite suite = runner->suites_to_run[i];
-
-		if (suite.has_passed)
-			printf("[ OK ] %s\n", suite.name);
-		else
-			printf("[FAIL] %s\n", suite.name);
-
+		
+		printf("%s\n", suite.name);
 		for (int j = 0; j < suite.test_cases_size; j++)
 		{
 			pnpcunit_TestCase test_case = suite.test_cases[j];
 
 			if (test_case.has_passed)
-				printf(" - [ OK ] %s\n", test_case.name);
+				printf("    PASS : %s\n", test_case.name);
 			else
-				printf(" - [FAIL] %s\n", test_case.name);
+				printf("->  FAIL : %s\n", test_case.name);
 
 		}
 
@@ -198,12 +194,12 @@ void display_results_in_command_line(pnpcunit_TestRunner *runner)
 
 	if (runner->has_passed == pnpcunit_TRUE)
 	{
-		puts("\nAll tests have passed!\n");
+		puts("All tests have passed!");
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
-		puts("\nSome tests have failed!\n");
+		puts("Some tests have failed!");
 		exit(EXIT_FAILURE);
 	}
 }
