@@ -11,10 +11,7 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script:
-    bash ./scripts/test_ci.sh
-    
-  displayName: 'Plug N' Play CUnit Framework'
+- task: Bash@3
+  inputs:
+    filePath: './scripts/test_ci.sh'
+    failOnStderr: true
