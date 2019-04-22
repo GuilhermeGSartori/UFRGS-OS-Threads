@@ -25,5 +25,5 @@ steps:
     workingDirectory: './testes'
 - task: PublishTestResults@2
   inputs:
-    testResultsFiles: './pnpcunit_result.xml'
+    testResultsFiles: '**/pnpcunit_result.xml'
     failTaskOnFailedTests: true
