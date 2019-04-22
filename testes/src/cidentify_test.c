@@ -12,8 +12,8 @@
 // =============================================================================================
 //                                           CONSTANTS
 // =============================================================================================
-#define TEST_CIDENTIFY_VALID_SIZE 115
-#define TEST_CIDENTIFY_INVALID_SIZE 114
+#define TEST_CIDENTIFY_VALID_SIZE 98
+#define TEST_CIDENTIFY_INVALID_SIZE 97
 
 
 // =============================================================================================
@@ -35,7 +35,7 @@ char* cidentify_expected_result;
  */
 void set_up_CIdentify()
 {
-	cidentify_expected_result = "Guilherme Girotto Sartori : 00274713\nMarlize Ramos Batista     : 00274703\nRenan Kummer de Jesus     : 00208946\n";
+	cidentify_expected_result = "Guilherme Girotto Sartori 00274713\nMarlize Ramos Batista 00274703\nRenan Kummer de Jesus 00208946\n";
 
 	cidentify_valid_size   = (char*) malloc(sizeof(char) * TEST_CIDENTIFY_VALID_SIZE);
 	cidentify_invalid_size = (char*) malloc(sizeof(char) * TEST_CIDENTIFY_INVALID_SIZE);

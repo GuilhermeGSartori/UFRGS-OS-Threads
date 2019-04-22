@@ -12,7 +12,7 @@
 // =============================================================================================
 //                                           CONSTANTS
 // =============================================================================================
-#define CIDENTIFY_MINIMUM_SIZE 115
+#define CIDENTIFY_MINIMUM_SIZE 98
 
 
 // ======================================================================================
@@ -86,5 +86,5 @@ void cidentify_set_identification(char* array)
 
 char* cidentify_get_identification()
 {
-	return "Guilherme Girotto Sartori : 00274713\nMarlize Ramos Batista     : 00274703\nRenan Kummer de Jesus     : 00208946\n";
+	return "Guilherme Girotto Sartori 00274713\nMarlize Ramos Batista 00274703\nRenan Kummer de Jesus 00208946\n";
 }
