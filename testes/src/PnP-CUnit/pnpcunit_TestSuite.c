@@ -60,6 +60,7 @@ pnpcunit_TestSuite* pnpcunit_create_test_suite(char* name)
 	new_suite->test_cases_size     = 0;
 	new_suite->test_cases_capacity = 0;
 
+    new_suite->failures   = 0;
 	new_suite->has_passed = pnpcunit_TRUE;
 	
     return new_suite;
