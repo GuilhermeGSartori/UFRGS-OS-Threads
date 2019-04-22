@@ -57,7 +57,7 @@ void teardown_CIdentify()
 
 pnpcunit_Bool test_CIdentify_Sample1()
 {
-	return pnpcunit_assert_true(pnpcunit_TRUE);
+	return pnpcunit_assert_true(pnpcunit_FALSE);
 }
 
 
