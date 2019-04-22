@@ -1,11 +1,11 @@
-cd ../testes
+cd $(System.DefaultWorkingDirectory)/testes
 make all
 
-cd ../bin
+cd $(System.DefaultWorkingDirectory)/bin
 ./Test_CThread.exe --pnpcunit-test --junit
 result=$?
 
-cd ../testes
+cd $(System.DefaultWorkingDirectory)/testes
 make clean
 
 if [ $result == 0 ]; then exit 0
