@@ -13,7 +13,16 @@ pool:
 steps:
 - task: Bash@3
   inputs:
-    filePath: './scripts/test_ci.sh'
+    filePath: './scripts/test_ci_build.sh'
+    workingDirectory: './testes'
+- task: Bash@3
+  inputs:
+    filePath: './scripts/test_ci_run.sh'
+    workingDirectory: './testes'
+- task: Bash@3
+  inputs:
+    filePath: './scripts/test_ci_clean.sh'
+    workingDirectory: './testes'
 - task: PublishTestResults@2
   inputs:
     testResultsFiles: './pnpcunit_result.xml'
