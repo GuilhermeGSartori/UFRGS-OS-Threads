@@ -1,1 +1,1 @@
-make all
+make No_Support
