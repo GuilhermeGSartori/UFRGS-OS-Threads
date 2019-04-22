@@ -1,0 +1,20 @@
+# Validate code changes in MASTER and DEV branches.
+#
+# The following open-source projects are used in this pipeline:
+#  - Plug N' Play CUnit Framework (v2019.1), by RenanKummer 
+
+trigger:
+- master
+- dev
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script:
+    bash ./scripts/test_ci.sh
+    
+  displayName: 'Plug N' Play CUnit Framework'
