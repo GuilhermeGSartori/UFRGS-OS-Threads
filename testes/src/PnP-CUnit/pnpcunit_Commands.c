@@ -48,6 +48,19 @@ void pnpcunit_get_help()
 	exit(EXIT_SUCCESS);
 }
 
+pnpcunit_ResultView pnpcunit_read_result_view(int argc, char** argv)
+{
+	pnpcunit_ResultView view = pnpcunit_RESULTS_CLI;
+
+	if (argc >= 3 && argv != NULL)
+	{
+		if (strcmp(argv[2], PNPCUNIT_VIEW_JUNIT) == 0)
+			view = pnpcunit_RESULTS_JUNIT;
+	}
+
+	return view;
+}
+
 
 // ======================================================================================
 //                           SUPPORT FUNCTIONS - IMPLEMENTATION

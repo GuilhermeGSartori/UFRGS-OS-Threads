@@ -21,6 +21,7 @@ typedef struct pnpcunit_TestSuite
     int test_cases_size;
     int test_cases_capacity;
 
+    int failures;
 	pnpcunit_Bool has_passed;
 } pnpcunit_TestSuite;
 

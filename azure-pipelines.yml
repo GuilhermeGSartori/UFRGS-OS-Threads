@@ -1,0 +1,29 @@
+# Validate code changes in MASTER and DEV branches.
+#
+# The following open-source projects are used in this pipeline:
+#  - Plug N' Play CUnit Framework (v2019.1), by RenanKummer 
+
+trigger:
+- master
+- dev
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- task: Bash@3
+  inputs:
+    filePath: './scripts/test_ci_build.sh'
+    workingDirectory: './testes'
+- task: Bash@3
+  inputs:
+    filePath: './scripts/test_ci_run.sh'
+    workingDirectory: './bin'
+- task: Bash@3
+  inputs:
+    filePath: './scripts/test_ci_clean.sh'
+    workingDirectory: './testes'
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/pnpcunit_result.xml'
+    failTaskOnFailedTests: true
