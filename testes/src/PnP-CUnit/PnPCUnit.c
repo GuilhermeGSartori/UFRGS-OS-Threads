@@ -7,14 +7,7 @@
 
 #include <stdio.h>
 
-#define PNPCUNIT_VERSION "v1"  // Version of the framework.
-
-void pnpcunit_display_framework_message()
+void pnpcunit_display_run_message()
 {
-	char* intro = "Plug N' Play CUnit Framework ("
-				  PNPCUNIT_VERSION
-				  ")";
-
-	puts(intro);
-	puts("Running test cases...\n");
+	puts("Running tests...\n");
 }

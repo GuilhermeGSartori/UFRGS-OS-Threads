@@ -14,9 +14,9 @@
 #include "pnpcunit_Bool.h"
 
 /**
- * Display Plug N' Play CUnit Framework message in Command Line.
+ * Display Plug N' Play CUnit Framework 'Run' message in Command Line.
  */
-void pnpcunit_display_framework_message();
+void pnpcunit_display_run_message();
 
 /**
  * Entry point for Plug N' Play CUnit Framework. This macro must be added as the first "statement" of your main function.
@@ -33,7 +33,7 @@ void pnpcunit_display_framework_message();
 	\
 	else if (command == pnpcunit_COMMAND_RUN_ALL)\
 	{\
-		pnpcunit_display_framework_message();\
+		pnpcunit_display_run_message();\
 		\
 		pnpcunit_TestRunner *runner = pnpcunit_create_test_runner();\
 		set_up_test_runner_function(runner);\
