@@ -3,6 +3,7 @@
  *
  * @author Marlize Ramos
  */
+#include "../include/constants.h"
 #include "../include/support.h"
 #include "../include/cthread.h"
 #include "../include/cdata.h"
@@ -13,10 +14,8 @@
 //                            SUPPORT FUNCTIONS - DECLARATION
 // ======================================================================================
 
-/**
- * Sample of support function. It uses cwait prefix to avoid naming conflicts.
- */
-void cwait_hello_world();
+int cwait_insert_to_queue(csem_t *sem);
+int cwait_find_position_to_insert(PFILA2 *semaphore_queue, Priority priority);
 
 
 // ======================================================================================
@@ -34,12 +33,8 @@ int cwait(csem_t *sem) {
 
     sem -> count--;
     if (sem->count <= 0)
-    {
-        insereNaFilaDoSemaforo(sem);
-
-    }
-
-    //else
+        return cwait_insert_to_queue(sem);
+    else
         return CTHREAD_SUCCESS;
 }
 
@@ -48,7 +43,47 @@ int cwait(csem_t *sem) {
 //                           SUPPORT FUNCTIONS - IMPLEMENTATION
 // ======================================================================================
 
-void cwait_hello_world()
+int cwait_insert_to_queue(csem_t *sem)
 {
-    printf("Hello world!\n");
+    TCB_t* current_thread = NULL;
+
+    int return_code = InsertAfterIteratorFila2(sem->fila, current_thread);
+
+    if (return_code != CTHREAD_SUCCESS)
+        return CTHREAD_FAILURE;
+    else
+        return CTHREAD_SUCCESS;
+
+}
+
+int cwait_find_position_to_insert(PFILA2 *semaphore_queue, Priority priority)
+{
+    if (semaphore_queue == NULL)
+        return CTHREAD_FAILURE;
+
+    int result_code;
+    switch (priority)
+    {
+        case LOW:
+            result_code = LastFila2(*semaphore_queue);
+            break;
+
+        case MEDIUM:
+
+            break;
+
+        case HIGH:
+            result_code = FirstFila2(*semaphore_queue);
+            if (result_code == CTHREAD_SUCCESS)
+            {
+                TCB_t *thread = (TCB_t*) GetAtNextIteratorFila2(*semaphore_queue);
+
+                while (thread != NULL && thread->prio == HIGH)
+                {
+                    NextFila2(*semaphore_queue);
+                    thread = (TCB_t*) GetAtNextIteratorFila2(*semaphore_queue);
+                }
+            }
+            break;
+    }
 }
