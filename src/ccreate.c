@@ -6,8 +6,13 @@
 #include "../include/support.h"
 #include "../include/cthread.h"
 #include "../include/cdata.h"
+#include "../include/scheduler.h"
+#include "ucontext.h"
 
 #include <stdio.h>
+#include <stdlib.h>
+
+
 
 // ======================================================================================
 //                            SUPPORT FUNCTIONS - DECLARATION
@@ -16,7 +21,7 @@
 /**
  * Sample of support function. It uses ccreate_ prefix to avoid naming conflicts.
  */ 
-void ccreate_hello_world();
+static void *ccreate_hello_world();
 
 
 // ======================================================================================
@@ -35,15 +40,77 @@ void ccreate_hello_world();
  * @return The thread identifier (tid) when successful, -1 otherwise.
  */
 int ccreate(void* (*start)(void*), void *arg, int prio) {
-	return -1;
+
+	int tid_r;
+	extern int TID;
+	extern TCB_t *running_thread;
+	extern TCB_t *running_thread2;
+
+	if(prio < 0 || prio > 2)
+		return -1;
+
+
+	if(init_scheduler() != 0)
+		return -2;
+
+	TCB_t* new_thread = (TCB_t*)malloc(sizeof(TCB_t));
+
+	getcontext(&(new_thread->context));
+	new_thread->tid = ++TID;
+	new_thread->state = PROCST_APTO;
+	new_thread->prio = prio;
+	new_thread->context.uc_link = NULL;
+	new_thread->context.uc_stack.ss_sp = (char*)malloc(20000);
+	new_thread->context.uc_stack.ss_size = 20000;
+	makecontext(&(new_thread->context), (void(*)(void))start, 1, arg);
+
+	/*I also need to create a context for the ending of a thread,
+	  so when a thread ends, a function that deals with this is called
+	  (using the .link component of the struct), this function needs
+	  to kill the TCB and find a new thread to execute in its place*/
+
+	tid_r = TID;
+
+
+	/*this is going to change, it will only put the TCP in the ready queue*/
+	if(prio == 0)
+	{
+		running_thread2 = new_thread; 
+		swapcontext(&running_thread->context, &running_thread2->context);
+		printf("*snaps*\n");
+	}
+
+	return tid_r;
+	
 }
+
 
 
 // ======================================================================================
 //                           SUPPORT FUNCTIONS - IMPLEMENTATION
 // ======================================================================================
 
-void ccreate_hello_world()
+static void *ccreate_hello_world()
 {
+
+	extern TCB_t *running_thread;
+	extern TCB_t *running_thread2;
+
     printf("Hello world!\n");
+    swapcontext(&running_thread2->context, &running_thread->context);
+    printf("Bye world!\n");
+    exit(0);
+}
+
+
+int main()
+{
+	extern TCB_t *running_thread;
+	extern TCB_t *running_thread2;
+
+	ccreate(&ccreate_hello_world, NULL, 0);
+	printf("mr. stark i dont feel so good\n");
+	swapcontext(&running_thread->context, &running_thread2->context);
+	
+	exit(0);
 }
