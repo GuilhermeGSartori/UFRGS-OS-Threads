@@ -43,8 +43,9 @@ int ccreate(void* (*start)(void*), void *arg, int prio) {
 
 	int tid_r;
 	extern int TID;
-	extern TCB_t *running_thread;
 	extern TCB_t *running_thread2;
+	extern ucontext_t *end_context;
+
 
 	if(prio < 0 || prio > 2)
 		return -1;
@@ -59,7 +60,7 @@ int ccreate(void* (*start)(void*), void *arg, int prio) {
 	new_thread->tid = ++TID;
 	new_thread->state = PROCST_APTO;
 	new_thread->prio = prio;
-	new_thread->context.uc_link = NULL;
+	new_thread->context.uc_link = end_context;
 	new_thread->context.uc_stack.ss_sp = (char*)malloc(20000);
 	new_thread->context.uc_stack.ss_size = 20000;
 	makecontext(&(new_thread->context), (void(*)(void))start, 1, arg);
@@ -72,11 +73,17 @@ int ccreate(void* (*start)(void*), void *arg, int prio) {
 	tid_r = TID;
 
 
+	if(set_as_ready(new_thread) != 0)
+		return -3;
+
+
 	/*this is going to change, it will only put the TCP in the ready queue*/
 	if(prio == 0)
 	{
+		TCB_t* thread_executing = (TCB_t*)malloc(sizeof(TCB_t));	
+		thread_executing = which_executing_t();
 		running_thread2 = new_thread; 
-		swapcontext(&running_thread->context, &running_thread2->context);
+		swapcontext(&thread_executing->context, &running_thread2->context);
 		printf("*snaps*\n");
 	}
 
@@ -93,24 +100,33 @@ int ccreate(void* (*start)(void*), void *arg, int prio) {
 static void *ccreate_hello_world()
 {
 
-	extern TCB_t *running_thread;
+	TCB_t *thread_executing = (TCB_t*)malloc(sizeof(TCB_t));
 	extern TCB_t *running_thread2;
 
+
+	thread_executing = which_executing_t();
+    
     printf("Hello world!\n");
-    swapcontext(&running_thread2->context, &running_thread->context);
+    swapcontext(&running_thread2->context, &thread_executing->context);
     printf("Bye world!\n");
     exit(0);
 }
 
+int ccreate_bye_world()
+{
+	return 0;
+}
 
 int main()
 {
-	extern TCB_t *running_thread;
+	TCB_t *thread_executing = (TCB_t*)malloc(sizeof(TCB_t));
 	extern TCB_t *running_thread2;
 
 	ccreate(&ccreate_hello_world, NULL, 0);
+	//ccreate((void*(*)(void *))ccreate_bye_world, NULL, 0);
 	printf("mr. stark i dont feel so good\n");
-	swapcontext(&running_thread->context, &running_thread2->context);
+	thread_executing = which_executing_t();
+	swapcontext(&thread_executing->context, &running_thread2->context);
 	
-	exit(0);
+	return 0;
 }

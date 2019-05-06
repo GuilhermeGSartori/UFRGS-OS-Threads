@@ -20,19 +20,20 @@ _Bool __tcb_main_init = 0;
 _Bool __queu_init = 0;
 _Bool __scheduler_init = 0;
 TCB_t *main_t = NULL;
-TCB_t *running_thread = NULL;
 TCB_t *running_thread2 = NULL;
+ucontext_t *end_context = NULL;
 FILA2 ready_low;
 FILA2 ready_mid;
 FILA2 ready_high;
-
+FILA2 exec;
 
 int init_scheduler()
 {
 	if(!__scheduler_init)
 	{
-		init_main();
 		init_queues();
+		init_main();
+
 		
 		if(!__tcb_main_init || !__queu_init)
 			return -1;
@@ -50,9 +51,12 @@ int init_queues()
 		if(CreateFila2(&ready_low) != 0)
 			return -1;
 		if(CreateFila2(&ready_mid) != 0)
-			return -2;
+	 		return -2;
 		if(CreateFila2(&ready_high) != 0)
 			return -3;
+		if(CreateFila2(&exec) != 0)
+			return -4;
+	
 
 		__queu_init = 1;
 	}
@@ -66,21 +70,144 @@ int init_main()
 	{
 
 		main_t = (TCB_t*)malloc(sizeof(TCB_t));
-		running_thread = (TCB_t*)malloc(sizeof(TCB_t));
 		running_thread2 = (TCB_t*)malloc(sizeof(TCB_t));
-		getcontext(&(main_t->context));
-		//initialiaze context space for the TCB thread (logicly defined to the main thread)
-		//the actual PC, SP and etc from the main is only saved when swapcontext is used!
-		//then, when evoked again, recovering the main context from the main, it continues
-		//after the swap!
-		//since the main is already executing, it doesnt need the "makecontext"
+		end_context = (ucontext_t*)malloc(sizeof(ucontext_t));
+
+		/*
+		 *creates context for the "end of thread" function.
+		 *this context is called when a thread ends (uc_link)
+		 */
+		getcontext(end_context);
+		end_context->uc_link = NULL;
+		end_context->uc_stack.ss_sp = (char*)malloc(20000);
+		end_context->uc_stack.ss_size = 20000;
+		makecontext(end_context, (void(*)(void))finish_thread, 0);
+
+		/*
+		 *initialiaze context space for the TCB thread (logicly defined to the main thread)
+		 *the actual PC, SP and etc from the main is only saved when swapcontext is used!
+		 *then, when evoked again, recovering the main context from the main, it continues
+		 *after the swap!
+		 *since the main is already executing, it doesnt need the "makecontext"
+		 */
 		main_t->tid = TID;
 		main_t->state = PROCST_EXEC;
 		main_t->prio = 2;
-		running_thread = main_t;
+		
+		getcontext(&(main_t->context));
+		main_t->context.uc_link = NULL;
+		main_t->context.uc_stack.ss_sp = (char*)malloc(20000);
+		main_t->context.uc_stack.ss_size = 20000;
+		
+		
+		if(AppendFila2(&exec, main_t) != 0)
+			return -1;
+
 
 		__tcb_main_init = 1;
 	}
 
 	return 0;
+}
+
+int finish_thread()
+{
+	TCB_t *executing;
+	TCB_t *next;
+
+	printf("i'm finishing something\n");
+
+	if(FirstFila2(&exec) != 0)
+		return -1;
+	executing = which_executing_t();
+
+	if(DeleteAtIteratorFila2(&exec) != 0)
+		return -2;
+	
+	executing->state = PROCST_TERMINO;
+	free(executing->context.uc_stack.ss_sp);
+	free(executing);
+	
+	next = get_most_prio_t();
+
+	if(next == NULL)
+		return 0;
+
+	if(AppendFila2(&exec, next) != 0)
+		return -3;	
+
+	setcontext(&next->context);
+
+	return 0;
+}
+
+int set_as_ready(TCB_t *thread)
+{
+	if(thread->prio == 2)
+	{
+		if(AppendFila2(&ready_low, thread) != 0)
+			return -1;
+		return 0;
+	}
+
+	else if(thread->prio == 1)
+	{
+		if(AppendFila2(&ready_mid, thread) != 0)
+			return -1;
+		return 0;
+	}
+
+	else if(thread->prio == 0)
+	{
+		if(AppendFila2(&ready_high, thread) != 0)
+			return -1;
+		return 0;
+	}
+	return -2;
+}
+
+TCB_t *get_most_prio_t()
+{
+	TCB_t *most_wanted;
+
+	if(FirstFila2(&ready_high) == 0)
+	{
+		most_wanted = GetAtIteratorFila2(&ready_high);
+		
+		if(DeleteAtIteratorFila2(&ready_high) != 0)
+			return NULL;
+		
+		return most_wanted;
+	}
+
+	else if(FirstFila2(&ready_mid) == 0)
+	{
+		most_wanted = GetAtIteratorFila2(&ready_mid);
+		
+		if(DeleteAtIteratorFila2(&ready_mid) != 0)
+			return NULL;
+		
+		return most_wanted;
+	}
+	else if(FirstFila2(&ready_low) == 0)
+	{
+		most_wanted = GetAtIteratorFila2(&ready_low);
+		
+		if(DeleteAtIteratorFila2(&ready_low) != 0)
+			return NULL;
+		
+		return most_wanted;
+	}
+
+	return NULL;
+}
+
+
+TCB_t *which_executing_t()
+{
+	if(FirstFila2(&exec) == 0)
+	{
+		return GetAtIteratorFila2(&exec);
+	}
+	return NULL;
 }
