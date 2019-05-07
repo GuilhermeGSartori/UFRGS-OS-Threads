@@ -22,6 +22,7 @@
  * Sample of support function. It uses ccreate_ prefix to avoid naming conflicts.
  */ 
 static void *ccreate_hello_world();
+static void *ccreate_bye_world();
 
 
 // ======================================================================================
@@ -43,7 +44,6 @@ int ccreate(void* (*start)(void*), void *arg, int prio) {
 
 	int tid_r;
 	extern int TID;
-	extern TCB_t *running_thread2;
 	extern ucontext_t *end_context;
 
 
@@ -58,11 +58,13 @@ int ccreate(void* (*start)(void*), void *arg, int prio) {
 
 	getcontext(&(new_thread->context));
 	new_thread->tid = ++TID;
-	new_thread->state = PROCST_APTO;
+	//new_thread->state = PROCST_APTO;
 	new_thread->prio = prio;
 	new_thread->context.uc_link = end_context;
+	//preciso rever esse 2000... tá estranha essa stack!
 	new_thread->context.uc_stack.ss_sp = (char*)malloc(20000);
 	new_thread->context.uc_stack.ss_size = 20000;
+	//q q é esse 1 no makecontexto? numero de argumentos?
 	makecontext(&(new_thread->context), (void(*)(void))start, 1, arg);
 
 	/*I also need to create a context for the ending of a thread,
@@ -77,16 +79,6 @@ int ccreate(void* (*start)(void*), void *arg, int prio) {
 		return -3;
 
 
-	/*this is going to change, it will only put the TCP in the ready queue*/
-	if(prio == 0)
-	{
-		TCB_t* thread_executing = (TCB_t*)malloc(sizeof(TCB_t));	
-		thread_executing = which_executing_t();
-		running_thread2 = new_thread; 
-		swapcontext(&thread_executing->context, &running_thread2->context);
-		printf("*snaps*\n");
-	}
-
 	return tid_r;
 	
 }
@@ -99,34 +91,31 @@ int ccreate(void* (*start)(void*), void *arg, int prio) {
 
 static void *ccreate_hello_world()
 {
-
-	TCB_t *thread_executing = (TCB_t*)malloc(sizeof(TCB_t));
-	extern TCB_t *running_thread2;
-
-
-	thread_executing = which_executing_t();
-    
-    printf("Hello world!\n");
-    swapcontext(&running_thread2->context, &thread_executing->context);
-    printf("Bye world!\n");
-    exit(0);
+	//mudando prio pra 2 muda output...
+	ccreate(&ccreate_bye_world, NULL, 1);	
+    printf("Hello World!\n");
+    return 0;
 }
 
-int ccreate_bye_world()
+static void *ccreate_bye_world()
 {
-	return 0;
+
+    printf("Bye World!\n");
+    return 0;
 }
+
 
 int main()
 {
-	TCB_t *thread_executing = (TCB_t*)malloc(sizeof(TCB_t));
-	extern TCB_t *running_thread2;
 
+	//cenários, coloca ccreate do bye world antes do ccreate hello world, muda output
+	//depois, ainda assim, muda prioridade, bye mais que hello...
 	ccreate(&ccreate_hello_world, NULL, 0);
-	//ccreate((void*(*)(void *))ccreate_bye_world, NULL, 0);
-	printf("mr. stark i dont feel so good\n");
-	thread_executing = which_executing_t();
-	swapcontext(&thread_executing->context, &running_thread2->context);
-	
+	printf("Is there anybody out there?\n");
+	cyield();
+	printf("Hello world, my sweet friend...\n");
+	cyield();
+	printf("Now my time has come..\n");
+
 	return 0;
 }

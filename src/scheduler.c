@@ -20,7 +20,6 @@ _Bool __tcb_main_init = 0;
 _Bool __queu_init = 0;
 _Bool __scheduler_init = 0;
 TCB_t *main_t = NULL;
-TCB_t *running_thread2 = NULL;
 ucontext_t *end_context = NULL;
 FILA2 ready_low;
 FILA2 ready_mid;
@@ -70,7 +69,6 @@ int init_main()
 	{
 
 		main_t = (TCB_t*)malloc(sizeof(TCB_t));
-		running_thread2 = (TCB_t*)malloc(sizeof(TCB_t));
 		end_context = (ucontext_t*)malloc(sizeof(ucontext_t));
 
 		/*
@@ -115,7 +113,7 @@ int finish_thread()
 	TCB_t *executing;
 	TCB_t *next;
 
-	printf("i'm finishing something\n");
+
 
 	if(FirstFila2(&exec) != 0)
 		return -1;
@@ -133,11 +131,14 @@ int finish_thread()
 	if(next == NULL)
 		return 0;
 
+	next->state = PROCST_EXEC;
+
 	if(AppendFila2(&exec, next) != 0)
 		return -3;	
 
-	setcontext(&next->context);
 
+	setcontext(&next->context);
+	
 	return 0;
 }
 
@@ -147,6 +148,7 @@ int set_as_ready(TCB_t *thread)
 	{
 		if(AppendFila2(&ready_low, thread) != 0)
 			return -1;
+		thread->state = PROCST_APTO;
 		return 0;
 	}
 
@@ -154,6 +156,7 @@ int set_as_ready(TCB_t *thread)
 	{
 		if(AppendFila2(&ready_mid, thread) != 0)
 			return -1;
+		thread->state = PROCST_APTO;
 		return 0;
 	}
 
@@ -161,6 +164,7 @@ int set_as_ready(TCB_t *thread)
 	{
 		if(AppendFila2(&ready_high, thread) != 0)
 			return -1;
+		thread->state = PROCST_APTO;	
 		return 0;
 	}
 	return -2;
