@@ -3,24 +3,47 @@
  * 
  * @author Renan Kummer
  */
-#include "../include/support.h"
+#include "../include/result_code.h"
 #include "../include/cthread.h"
-#include "../include/cdata.h"
+#include <stdlib.h>
+#include <string.h>
 
-#include <stdio.h>
+
+// =============================================================================================
+//                                           CONSTANTS
+// =============================================================================================
+#define CIDENTIFY_MINIMUM_SIZE 98
+
 
 // ======================================================================================
 //                            SUPPORT FUNCTIONS - DECLARATION
 // ======================================================================================
 
 /**
- * Sample of support function. It uses cidentify prefix to avoid naming conflicts.
+ * Clear the contents of string.
+ * 
+ * @param string A string to be cleared.
  */ 
-void cidentify_hello_world();
+void cidentify_clear(char* string);
+
+/**
+ * Set names and university IDs of students in the development group.
+ * 
+ * @param array An array to write the string to.
+ */
+void cidentify_set_identification(char* array);
+
+/**
+ * Get names and university IDs of students in the development group.
+ * 
+ * @return A string containing the names and university IDs of students in the 
+ *         development group.
+ */
+char* cidentify_get_identification();
 
 
 // ======================================================================================
-//                                        CSIGNAL
+//                                       CIDENTIFY
 // ======================================================================================
 
 /**
@@ -32,8 +55,13 @@ void cidentify_hello_world();
  * @return 0 if successful, -1 otherwise.
  */
 int cidentify (char *name, int size) {
-	strncpy (name, "Sergio Cechin - 2017/1 - Teste de compilacao.", size);
-	return 0;
+	if (name == NULL)
+		return CTHREAD_FAILURE;
+	if (size < CIDENTIFY_MINIMUM_SIZE)
+		return CTHREAD_FAILURE;
+
+	cidentify_set_identification(name);
+	return CTHREAD_SUCCESS;
 }
 
 
@@ -41,7 +69,22 @@ int cidentify (char *name, int size) {
 //                           SUPPORT FUNCTIONS - IMPLEMENTATION
 // ======================================================================================
 
-void cidentify_hello_world()
+void cidentify_clear(char* string)
 {
-    printf("Hello world!\n");
+    if (string != NULL)
+		string[0] = '\0';
+}
+
+void cidentify_set_identification(char* array)
+{
+	if (array != NULL) 
+	{
+		cidentify_clear(array);
+		strcpy(array, cidentify_get_identification());
+	}
+}
+
+char* cidentify_get_identification()
+{
+	return "Guilherme Girotto Sartori 00274713\nMarlize Ramos Batista 00274703\nRenan Kummer de Jesus 00208946\n";
 }

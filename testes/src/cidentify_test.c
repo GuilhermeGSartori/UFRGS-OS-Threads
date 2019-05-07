@@ -4,6 +4,24 @@
  * @author Renan Kummer
  */
 #include "../include/cidentify_test.h"
+#include "../../include/result_code.h"
+#include "../../include/cthread.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+// =============================================================================================
+//                                           CONSTANTS
+// =============================================================================================
+#define TEST_CIDENTIFY_VALID_SIZE 98
+#define TEST_CIDENTIFY_INVALID_SIZE 97
+
+
+// =============================================================================================
+//                                       GLOBAL VARIABLES
+// =============================================================================================
+char* cidentify_valid_size;
+char* cidentify_invalid_size;
+char* cidentify_expected_result;
 
 
 // =============================================================================================
@@ -17,7 +35,10 @@
  */
 void set_up_CIdentify()
 {
+	cidentify_expected_result = "Guilherme Girotto Sartori 00274713\nMarlize Ramos Batista 00274703\nRenan Kummer de Jesus 00208946\n";
 
+	cidentify_valid_size   = (char*) malloc(sizeof(char) * TEST_CIDENTIFY_VALID_SIZE);
+	cidentify_invalid_size = (char*) malloc(sizeof(char) * TEST_CIDENTIFY_INVALID_SIZE);
 }
 
 /**
@@ -27,7 +48,8 @@ void set_up_CIdentify()
  */
 void before_each_CIdentify()
 {
-
+	cidentify_valid_size[0]   = '\0';
+	cidentify_invalid_size[0] = '\0';
 }
 
 /**
@@ -47,7 +69,10 @@ void after_each_CIdentify()
  */
 void teardown_CIdentify()
 {
-    
+    cidentify_expected_result = NULL;
+
+	free(cidentify_valid_size);
+	free(cidentify_invalid_size);
 }
 
 
@@ -55,9 +80,32 @@ void teardown_CIdentify()
 //                                          TEST CASES
 // =============================================================================================
 
-pnpcunit_Bool test_CIdentify_Sample1()
+pnpcunit_Bool test_CIdentify_ValidCall()
 {
-	return pnpcunit_assert_true(pnpcunit_FALSE);
+	int result_code = cidentify(cidentify_valid_size, TEST_CIDENTIFY_VALID_SIZE);
+
+	pnpcunit_Bool has_success_code = pnpcunit_assert_equal_int(result_code, CTHREAD_SUCCESS);
+	pnpcunit_Bool has_identifications = pnpcunit_assert_equal_string(cidentify_valid_size, cidentify_expected_result);
+
+	return has_success_code && has_identifications;
+}
+
+pnpcunit_Bool test_CIdentify_SmallSize()
+{
+	int result_code = cidentify(cidentify_invalid_size, TEST_CIDENTIFY_INVALID_SIZE);
+
+	pnpcunit_Bool has_failure_code = pnpcunit_assert_equal_int(result_code, CTHREAD_FAILURE);
+
+	return has_failure_code;
+}
+
+pnpcunit_Bool test_CIdentify_NullPointer()
+{
+	int result_code = cidentify(NULL, TEST_CIDENTIFY_VALID_SIZE);
+
+	pnpcunit_Bool has_failure_code = pnpcunit_assert_equal_int(result_code, CTHREAD_FAILURE);
+
+	return has_failure_code;
 }
 
 
@@ -75,7 +123,9 @@ pnpcunit_TestSuite* configure_suite_CIdentify()
 	suite->teardown    = teardown_CIdentify;
 
 	// -- ADD TEST CASES BELOW: --
-	pnpcunit_add_test_case(suite, test_CIdentify_Sample1, "Sample");
+	pnpcunit_add_test_case(suite, test_CIdentify_ValidCall, "ValidCall");
+	pnpcunit_add_test_case(suite, test_CIdentify_SmallSize, "SmallSize");
+	pnpcunit_add_test_case(suite, test_CIdentify_NullPointer, "NullPointer");
 
 	return suite;
 }

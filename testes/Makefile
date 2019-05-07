@@ -13,6 +13,7 @@ COMPILER   =gcc
 LIBRARY_DIR=../lib
 
 MAIN_INCLUDE_DIR=../include
+MAIN_SOURCE_DIR =../src
 MAIN_BINARY_DIR =../bin
 
 TEST_INCLUDE_DIR=./include
@@ -33,13 +34,11 @@ all: Test_CThread
 
 Test_CThread:
 	@echo "Building tests..."
-	@echo ""
-	@$(COMPILER) -o $(MAIN_BINARY_DIR)/Test_CThread.exe $(PNPCUNIT_INCLUDE_DIR)/*.h $(TEST_INCLUDE_DIR)/*.h $(TEST_CONFIG_DIR)/*.h $(PNPCUNIT_SOURCE_DIR)/*.c $(TEST_SOURCE_DIR)/*.c $(TEST_CONFIG_DIR)/*.c $(MAIN_BINARY_DIR)/support.o
+	@$(COMPILER) -o $(MAIN_BINARY_DIR)/Test_CThread.exe $(PNPCUNIT_INCLUDE_DIR)/*.h $(TEST_INCLUDE_DIR)/*.h $(TEST_CONFIG_DIR)/*.h $(MAIN_INCLUDE_DIR)/*.h $(PNPCUNIT_SOURCE_DIR)/*.c $(TEST_SOURCE_DIR)/*.c $(TEST_CONFIG_DIR)/*.c $(MAIN_SOURCE_DIR)/*.c $(MAIN_BINARY_DIR)/support.o
 
-No_Support:
+Test_CThread_x64:
 	@echo "Building tests..."
-	@echo ""
-	@$(COMPILER) -o $(MAIN_BINARY_DIR)/Test_CThread.exe $(PNPCUNIT_INCLUDE_DIR)/*.h $(TEST_INCLUDE_DIR)/*.h $(TEST_CONFIG_DIR)/*.h $(PNPCUNIT_SOURCE_DIR)/*.c $(TEST_SOURCE_DIR)/*.c $(TEST_CONFIG_DIR)/*.c
+	@$(COMPILER) -o $(MAIN_BINARY_DIR)/Test_CThread.exe $(PNPCUNIT_INCLUDE_DIR)/*.h $(TEST_INCLUDE_DIR)/*.h $(TEST_CONFIG_DIR)/*.h $(MAIN_INCLUDE_DIR)/*.h $(PNPCUNIT_SOURCE_DIR)/*.c $(TEST_SOURCE_DIR)/*.c $(TEST_CONFIG_DIR)/*.c $(MAIN_SOURCE_DIR)/*.c
 
 clean:
 	@echo "Cleaning tests..."
