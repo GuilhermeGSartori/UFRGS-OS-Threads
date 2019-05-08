@@ -24,6 +24,7 @@ ucontext_t *end_context = NULL;
 FILA2 ready_low;
 FILA2 ready_mid;
 FILA2 ready_high;
+FILA2 block_join;
 FILA2 exec;
 
 int init_scheduler()
@@ -53,8 +54,10 @@ int init_queues()
 	 		return -2;
 		if(CreateFila2(&ready_high) != 0)
 			return -3;
-		if(CreateFila2(&exec) != 0)
+		if(CreateFila2(&block_join) != 0)
 			return -4;
+		if(CreateFila2(&exec) != 0)
+			return -5;
 	
 
 		__queu_init = 1;
@@ -113,16 +116,18 @@ int finish_thread()
 	TCB_t *executing;
 	TCB_t *next;
 
-
-
 	if(FirstFila2(&exec) != 0)
 		return -1;
 	executing = which_executing_t();
 
 	if(DeleteAtIteratorFila2(&exec) != 0)
 		return -2;
-	
+
 	executing->state = PROCST_TERMINO;
+	
+	if(check_if_join(executing->tid) != 0)
+		return -3;
+	
 	free(executing->context.uc_stack.ss_sp);
 	free(executing);
 	
@@ -134,7 +139,7 @@ int finish_thread()
 	next->state = PROCST_EXEC;
 
 	if(AppendFila2(&exec, next) != 0)
-		return -3;	
+		return -4;	
 
 
 	setcontext(&next->context);
@@ -214,4 +219,60 @@ TCB_t *which_executing_t()
 		return GetAtIteratorFila2(&exec);
 	}
 	return NULL;
+}
+
+TCB_t *exec_next()
+{
+	TCB_t *next;
+
+	next = get_most_prio_t();
+
+	if(FirstFila2(&exec) != 0)
+	{
+		if(AppendFila2(&exec, next) != 0)
+			return NULL;
+		next->state = PROCST_EXEC;
+	}
+	else
+		return NULL;
+
+	return next;
+}
+
+int join_block_t(JoinBlocked *blocked)
+{
+	if(AppendFila2(&block_join, blocked) != 0)
+		return -1;
+	return 0;
+}
+
+int check_if_join(int tid)
+{
+	int queue_end;
+	JoinBlocked *current;
+	TCB_t *desblock;
+
+	queue_end = FirstFila2(&block_join);
+
+	while(queue_end == 0)
+	{
+		current = GetAtIteratorFila2(&block_join);
+		if(current->tid == tid)
+		{
+			desblock = current->blocked_t;
+			if(set_as_ready(desblock) != 0)
+				return -1;
+			desblock->state = PROCST_APTO;
+			if(DeleteAtIteratorFila2(&block_join) != 0)
+				return -2;
+			queue_end = 1;
+		}
+		else
+		{
+			if(NextFila2(&block_join) != 0)
+				queue_end = -1;	
+		}
+	}
+
+	return 0;
 }
