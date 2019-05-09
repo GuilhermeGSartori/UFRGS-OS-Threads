@@ -92,7 +92,7 @@ int ccreate(void* (*start)(void*), void *arg, int prio) {
 static void *ccreate_hello_world()
 {
 	//mudando prio pra 2 muda output...
-	ccreate(&ccreate_bye_world, NULL, 1);	
+	ccreate(&ccreate_bye_world, NULL, 2);	
     printf("Hello World!\n");
     return 0;
 }
@@ -103,6 +103,38 @@ static void *ccreate_bye_world()
     printf("Bye World!\n");
     return 0;
 }
+
+static void *ccreate_join_waited()
+{
+
+	printf("wow, thanks for waiting me!\n");
+
+	return 0;
+}
+
+/*static void *ccreate_join_waiter(void *tid)
+{
+
+	printf("I'm going to wait my good friend! with tid %d\n", *tid);
+	cjoin(*tid);
+	printf("my friend did what he needed, bye!\n");
+
+	return 0;
+}*/
+
+static void *ccreate_join_middle2()
+{
+	printf("I have the same priority but you were blocked, muahaha\n");
+	return 0;
+}
+
+static void *ccreate_join_middle()
+{
+	printf("I have more priority, muahaha\n");
+	ccreate(&ccreate_join_middle2, NULL, 2);
+	return 0;
+}
+
 
 
 int main()
@@ -116,6 +148,27 @@ int main()
 	printf("Hello world, my sweet friend...\n");
 	cyield();
 	printf("Now my time has come..\n");
+
+	int wait;
+
+	wait = ccreate(&ccreate_join_waited, NULL, 1);
+	//ccreate(&ccreate_join_waiter, &wait, 0);
+	ccreate(&ccreate_join_middle, NULL, 0);
+	printf("I'm going to wait my good friend! with tid %d\n", wait);
+	cjoin(wait);
+	printf("my friend did what he needed, bye!\n");
+
+	/*TODO
+		*Fazer os arquivos de teste
+		*Explicar o que cada função auxiliar faz
+		*Stack não ser 2000... e sim algo real, de verdade, que faça sentido (olhar os outros trabs)
+		*revisar trabs dos outros e ver se deixei passar detalhe
+		*Passar argumentos pra ccreate e ver se eles funcionar assim
+		*comentar o que precisar comentar
+		*make fazer .a e rm
+		*modular melhor, fazer outras funções extra
+	*/
+
 
 	return 0;
 }
