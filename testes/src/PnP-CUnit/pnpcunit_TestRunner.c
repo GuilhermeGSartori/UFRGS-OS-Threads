@@ -118,7 +118,8 @@ void pnpcunit_run_all_test_suites(pnpcunit_TestRunner* runner)
 {
 	if (runner != NULL && runner->suites_to_run_size > 0)
 	{
-		for (int i = 0; i < runner->suites_to_run_size; i++)
+		int i;
+		for (i = 0; i < runner->suites_to_run_size; i++)
 		{	
 			pnpcunit_Bool result = run_single_test_suite(&(runner->suites_to_run[i]));
 
@@ -175,7 +176,8 @@ pnpcunit_Bool run_single_test_suite(pnpcunit_TestSuite *suite)
 	if (suite->set_up != NULL)
 		suite->set_up();
 
-	for (int j = 0; j < suite->test_cases_size; j++)
+	int j;
+	for (j = 0; j < suite->test_cases_size; j++)
 	{
 		if (suite->before_each != NULL)
 			suite->before_each();
@@ -208,12 +210,13 @@ void add_test_suite_to_runner(pnpcunit_TestRunner *runner, pnpcunit_TestSuite *s
 
 void display_results_in_command_line(pnpcunit_TestRunner *runner)
 {
-	for (int i = 0; i < runner->suites_to_run_size; i++)
+	int i, j;
+	for (i = 0; i < runner->suites_to_run_size; i++)
 	{
 		pnpcunit_TestSuite suite = runner->suites_to_run[i];
 		
 		printf("%s\n", suite.name);
-		for (int j = 0; j < suite.test_cases_size; j++)
+		for (j = 0; j < suite.test_cases_size; j++)
 		{
 			pnpcunit_TestCase test_case = suite.test_cases[j];
 
@@ -259,7 +262,8 @@ void display_results_as_junix_xml(pnpcunit_TestRunner *runner)
 
 	fprintf(test_results, "%s", testsuites_tag);
 
-	for (int i = 0; i < runner->suites_to_run_size; i++)
+	int i, j;
+	for (i = 0; i < runner->suites_to_run_size; i++)
 	{
 		pnpcunit_TestSuite suite = runner->suites_to_run[i];
 
@@ -280,7 +284,7 @@ void display_results_as_junix_xml(pnpcunit_TestRunner *runner)
 
 		fprintf(test_results, "%s", testsuite_tag);
 
-		for (int j = 0; j < suite.test_cases_size; j++)
+		for (j = 0; j < suite.test_cases_size; j++)
 		{
 			pnpcunit_TestCase test_case = suite.test_cases[j];
 
@@ -318,7 +322,8 @@ void display_results_as_junix_xml(pnpcunit_TestRunner *runner)
 int get_number_of_tests(pnpcunit_TestRunner *runner)
 {
 	int number_of_tests = 0;
-	for (int i = 0; i < runner->suites_to_run_size; ++i)
+	int i;
+	for (i = 0; i < runner->suites_to_run_size; ++i)
 	{
 		pnpcunit_TestSuite suite = runner->suites_to_run[i];
 		number_of_tests += suite.test_cases_size;
@@ -336,11 +341,12 @@ char* pnpcunit_parse_int_to_string(int value)
 		value *= -1;
 
 	int string_size = 0;
-	for (int i = value; i > 0; i /= 10)
+	int i;
+	for (i = value; i > 0; i /= 10)
 		string_size++;
 
 	char* string = (char*) malloc(sizeof(char) * string_size + 2);
-	for (int i = 0; i < string_size; ++i)
+	for (i = 0; i < string_size; ++i)
 	{
 		string[i] = (value % 10) + '0';
 		value /= 10;

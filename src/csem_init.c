@@ -1,23 +1,13 @@
 /**
  * Implementation of CThread's csem_init function, including supporting functions.
  * 
- * @author Marlize Ramos
+ * @author Renan Kummer
  */
+#include "../include/constants.h"
 #include "../include/support.h"
 #include "../include/cthread.h"
 #include "../include/cdata.h"
-
-#include <stdio.h>
-
-// ======================================================================================
-//                            SUPPORT FUNCTIONS - DECLARATION
-// ======================================================================================
-
-/**
- * Sample of support function. It uses csem_init prefix to avoid naming conflicts.
- */ 
-void csem_init_hello_world();
-
+#include <stdlib.h>
 
 // ======================================================================================
 //                                       CSEM_INIT
@@ -30,16 +20,16 @@ void csem_init_hello_world();
  * @param count Quantity of resources managed by semaphore.
  * @return 0 if successful, -1 otherwise.
  */
-int csem_init(csem_t *sem, int count) {
-	return -1;
-}
-
-
-// ======================================================================================
-//                           SUPPORT FUNCTIONS - IMPLEMENTATION
-// ======================================================================================
-
-void csem_init_hello_world()
+int csem_init(csem_t *sem, int count) 
 {
-    printf("Hello world!\n");
+    if (sem == NULL || count <= 0)
+        return CTHREAD_FAILURE;
+
+    int result_code = CreateFila2(sem->fila);
+    if (result_code != CTHREAD_SUCCESS)
+        return CTHREAD_FAILURE;
+    
+    sem->count = count;
+	return CTHREAD_SUCCESS;
+
 }
