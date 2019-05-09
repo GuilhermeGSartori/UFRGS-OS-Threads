@@ -4,6 +4,14 @@
  * @author Marlize Ramos
  */
 #include "../include/csem_init_test.h"
+#include "../../include/constants.h"
+#include "../../include/cthread.h"
+#include <stdlib.h>
+
+// =============================================================================================
+//                                       GLOBAL VARIABLES
+// =============================================================================================
+csem_t* semaphore;
 
 
 // =============================================================================================
@@ -17,7 +25,7 @@
  */
 void set_up_CSemInit()
 {
-
+	semaphore = (csem_t*) malloc(sizeof(csem_t));
 }
 
 /**
@@ -47,7 +55,7 @@ void after_each_CSemInit()
  */
 void teardown_CSemInit()
 {
-    
+    free(semaphore);
 }
 
 
@@ -55,9 +63,19 @@ void teardown_CSemInit()
 //                                          TEST CASES
 // =============================================================================================
 
-pnpcunit_Bool test_CSemInit_Sample1()
+pnpcunit_Bool test_CSemInit_CreateValidSemaphore()
 {
-	return pnpcunit_assert_true(pnpcunit_TRUE);
+	return csem_init(semaphore, 3) == CTHREAD_SUCCESS;
+}
+
+pnpcunit_Bool test_CSemInit_CreateSemaphoreNullParameters()
+{
+	return csem_init(NULL, 3) == CTHREAD_FAILURE;
+}
+
+pnpcunit_Bool test_CSemInit_CreateSemaphoreLowCount()
+{
+	return (csem_init(semaphore, 0) == CTHREAD_FAILURE) && (csem_init(semaphore, -1) == CTHREAD_FAILURE);
 }
 
 
@@ -75,7 +93,9 @@ pnpcunit_TestSuite* configure_suite_CSemInit()
 	suite->teardown    = teardown_CSemInit;
 
 	// -- ADD TEST CASES BELOW: --
-	pnpcunit_add_test_case(suite, test_CSemInit_Sample1, "Sample");
+	pnpcunit_add_test_case(suite, test_CSemInit_CreateValidSemaphore, "CreateValidSemaphore");
+	pnpcunit_add_test_case(suite, test_CSemInit_CreateSemaphoreNullParameters, "CreateValidSemaphore");
+	pnpcunit_add_test_case(suite, test_CSemInit_CreateSemaphoreLowCount, "CreateValidSemaphore");
 
 	return suite;
 }

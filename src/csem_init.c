@@ -7,13 +7,7 @@
 #include "../include/support.h"
 #include "../include/cthread.h"
 #include "../include/cdata.h"
-
-#include <stdio.h>
-
-// ======================================================================================
-//                            SUPPORT FUNCTIONS - DECLARATION
-// ======================================================================================
-
+#include <stdlib.h>
 
 // ======================================================================================
 //                                       CSEM_INIT
@@ -28,11 +22,14 @@
  */
 int csem_init(csem_t *sem, int count) 
 {
-	return CTHREAD_NOT_IMPLEMENTED;
+    if (sem == NULL || count <= 0)
+        return CTHREAD_FAILURE;
+
+    int result_code = CreateFila2(sem->fila);
+    if (result_code != CTHREAD_SUCCESS)
+        return CTHREAD_FAILURE;
+    
+    sem->count = count;
+	return CTHREAD_SUCCESS;
+
 }
-
-
-// ======================================================================================
-//                           SUPPORT FUNCTIONS - IMPLEMENTATION
-// ======================================================================================
-
