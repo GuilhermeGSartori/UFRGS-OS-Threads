@@ -83,7 +83,7 @@ TCB_t* csignal_get_highest_priority_thread(PFILA2 semaphore_queue)
 	while (GetAtNextIteratorFila2(semaphore_queue) == CTHREAD_SUCCESS)
 	{
 		if (NextFila2(semaphore_queue) != CTHREAD_SUCCESS)
-			return CTHREAD_FAILURE;
+			return NULL;
 
 		current_thread = (TCB_t*) GetAtIteratorFila2(semaphore_queue);
 
@@ -110,7 +110,7 @@ ResultCode csignal_insert_in_ready_queue(TCB_t* thread)
 
 	if (thread->prio == LOW)
 	{
-		if (AppendFila2(ready_low, thread) == CTHREAD_SUCCESS)
+		if (AppendFila2(&ready_low, thread) == CTHREAD_SUCCESS)
 			return CTHREAD_SUCCESS;
 		else
 			return CTHREAD_FAILURE;
@@ -118,7 +118,7 @@ ResultCode csignal_insert_in_ready_queue(TCB_t* thread)
 
 	if (thread->prio == MEDIUM)
 	{
-		if (AppendFila2(ready_mid, thread) == CTHREAD_SUCCESS)
+		if (AppendFila2(&ready_mid, thread) == CTHREAD_SUCCESS)
 			return CTHREAD_SUCCESS;
 		else
 			return CTHREAD_FAILURE;
@@ -126,7 +126,7 @@ ResultCode csignal_insert_in_ready_queue(TCB_t* thread)
 
 	if (thread->prio == HIGH)
 	{
-		if (AppendFila2(ready_high, thread) == CTHREAD_SUCCESS)
+		if (AppendFila2(&ready_high, thread) == CTHREAD_SUCCESS)
 			return CTHREAD_SUCCESS;
 		else
 			return CTHREAD_FAILURE;
