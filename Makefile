@@ -24,9 +24,10 @@ cthread: #dependências para compilação da ccthread
 	$(CC) -Wall -c $(SRC_DIR)/cyield.c -o $(BIN_DIR)/cyield.o
 	$(CC) -Wall -c $(SRC_DIR)/csetprio.c -o $(BIN_DIR)/csetprio.o
 	$(CC) -Wall -c $(SRC_DIR)/cidentify.c -o $(BIN_DIR)/cidentify.o
+	$(CC) -Wall -c $(SRC_DIR)/cjoin.c -o $(BIN_DIR)/cjoin.o
 
 test: #dependências para a criação de um executavel linkando os objetos
-	$(CC) -Wall -o output  $(BIN_DIR)/support.o $(BIN_DIR)/scheduler.o $(BIN_DIR)/ccreate.o $(BIN_DIR)/cyield.o $(BIN_DIR)/csetprio.o $(BIN_DIR)/cidentify.o
+	$(CC) -Wall -o output  $(BIN_DIR)/support.o $(BIN_DIR)/scheduler.o $(BIN_DIR)/ccreate.o $(BIN_DIR)/cyield.o $(BIN_DIR)/csetprio.o $(BIN_DIR)/cidentify.o $(BIN_DIR)/cjoin.o
 
 clean:
 	rm -rf $(LIB_DIR)/*.a $(BIN_DIR)/*.o $(SRC_DIR)/*~ $(INC_DIR)/*~ *~
