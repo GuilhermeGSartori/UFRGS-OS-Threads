@@ -4,18 +4,46 @@
  * @author Renan Kummer
  */
 #include "../include/constants.h"
+#include "../include/scheduler.h"
 #include "../include/support.h"
 #include "../include/cthread.h"
 #include "../include/cdata.h"
-
 #include <stdio.h>
+
+// ======================================================================================
+//                                    GLOBAL VARIABLES
+// ======================================================================================
+
+extern FILA2 ready_low;
+extern FILA2 ready_mid;
+extern FILA2 ready_high;
+extern FILA2 exec;
 
 // ======================================================================================
 //                            SUPPORT FUNCTIONS - DECLARATION
 // ======================================================================================
 
-int cwait_insert_to_queue(csem_t *sem);
-int cwait_find_position_to_insert(PFILA2 *semaphore_queue, Priority priority);
+/**
+ * Insert current running thread in the semaphore queue at the end of the queue.
+ * 
+ * @param sem The semaphore.
+ * @return CTHREAD_SUCCESS if successful, CTHREAD_FAILURE otherwise.
+ */
+ResultCode cwait_insert_to_queue(csem_t *sem);
+
+/**
+ * Clear EXEC queue since the running thread has been blocked waiting for a resource.
+ * 
+ * @return CTHREAD_SUCCESS if successful, CTHREAD_FAILURE otherwise.
+ */
+ResultCode cwait_clear_exec();
+
+/**
+ * Execute highest priority thread in APTO queues.
+ * 
+ * @return CTHREAD_SUCCESS if successful, CTHREAD_FAILURE otherwise.
+ */
+ResultCode cwait_run_highest_priority_thread();
 
 
 // ======================================================================================
@@ -33,9 +61,15 @@ int cwait(csem_t *sem) {
 
     sem -> count--;
     if (sem->count <= 0)
-        return cwait_insert_to_queue(sem);
-    else
-        return CTHREAD_SUCCESS;
+    {
+        if (cwait_insert_to_queue(sem) == CTHREAD_FAILURE)
+            return CTHREAD_FAILURE;
+
+        if (cwait_run_highest_priority_thread() == CTHREAD_FAILURE)
+            return CTHREAD_FAILURE;
+    }
+
+    return CTHREAD_SUCCESS;
 }
 
 
@@ -43,47 +77,41 @@ int cwait(csem_t *sem) {
 //                           SUPPORT FUNCTIONS - IMPLEMENTATION
 // ======================================================================================
 
-int cwait_insert_to_queue(csem_t *sem)
+ResultCode cwait_insert_to_queue(csem_t *sem)
 {
-    TCB_t* current_thread = NULL;
+    TCB_t* current_thread = which_executing_t();
 
-    int return_code = InsertAfterIteratorFila2(sem->fila, current_thread);
-
-    if (return_code != CTHREAD_SUCCESS)
-        return CTHREAD_FAILURE;
-    else
+    if (AppendFila2(sem->fila, current_thread) == CTHREAD_SUCCESS)
         return CTHREAD_SUCCESS;
-
+    else
+        return CTHREAD_FAILURE;
 }
 
-int cwait_find_position_to_insert(PFILA2 *semaphore_queue, Priority priority)
+ResultCode cwait_clear_exec()
 {
-    if (semaphore_queue == NULL)
-        return CTHREAD_FAILURE;
-
-    int result_code;
-    switch (priority)
+    if (FirstFila2(&exec) == CTHREAD_SUCCESS)
     {
-        case LOW:
-            result_code = LastFila2(*semaphore_queue);
-            break;
-
-        case MEDIUM:
-
-            break;
-
-        case HIGH:
-            result_code = FirstFila2(*semaphore_queue);
-            if (result_code == CTHREAD_SUCCESS)
-            {
-                TCB_t *thread = (TCB_t*) GetAtNextIteratorFila2(*semaphore_queue);
-
-                while (thread != NULL && thread->prio == HIGH)
-                {
-                    NextFila2(*semaphore_queue);
-                    thread = (TCB_t*) GetAtNextIteratorFila2(*semaphore_queue);
-                }
-            }
-            break;
+        if (DeleteAtIteratorFila2(&exec) == CTHREAD_SUCCESS)
+            return CTHREAD_SUCCESS;
+        else
+            return CTHREAD_FAILURE;
     }
+
+    return CTHREAD_SUCCESS;
+}
+
+ResultCode cwait_run_highest_priority_thread()
+{
+    cwait_clear_exec();
+    
+    TCB_t* next_thread = get_most_prio_t();
+    if (AppendFila2(&exec, next_thread) == CTHREAD_SUCCESS)
+    {
+        // TODO: Change context!!
+        next_thread->state = PROCST_EXEC;
+        
+        return CTHREAD_SUCCESS;
+    }
+
+    return CTHREAD_FAILURE;
 }
