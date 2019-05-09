@@ -55,9 +55,9 @@ void teardown_CCreate()
 //                                          TEST CASES
 // =============================================================================================
 
-pnpcunit_Bool test_CCreate_Sample1()
+pnpcunit_Bool test_CCreate()
 {
-	return pnpcunit_assert_true(pnpcunit_TRUE);
+	
 }
 
 
@@ -75,7 +75,7 @@ pnpcunit_TestSuite* configure_suite_CCreate()
 	suite->teardown    = teardown_CCreate;
 
 	// -- ADD TEST CASES BELOW: --
-	pnpcunit_add_test_case(suite, test_CCreate_Sample1, "Sample");
+	pnpcunit_add_test_case(suite, test_CCreate, "Test");
 
 	return suite;
 }
