@@ -1,7 +1,11 @@
-cd ../testes
+cd ..
+make all
+cd testes
 make all
 cd ../bin
 ./Test_CThread.exe --pnpcunit-test
 cd ../testes
 make clean
-cd ../scripts
+cd ..
+make clean
+cd scripts
