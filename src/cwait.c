@@ -1,7 +1,7 @@
 /**
  * Implementation of CThread's cwait function, including supporting functions.
  *
- * @author Marlize Ramos
+ * @author Renan Kummer
  */
 #include "../include/constants.h"
 #include "../include/support.h"
