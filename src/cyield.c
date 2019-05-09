@@ -32,8 +32,8 @@ void cyield_hello_world();
  */
 int cyield(void) {
 
-	TCB_t *executing_t;//since its a pointer, it is goint the use the context in the same address
 	TCB_t *next;
+	TCB_t *executing_t;//since its a pointer, it is goint the use the context in the same address
 	extern FILA2 exec;
 
 	if(init_scheduler() != 0)
@@ -49,16 +49,7 @@ int cyield(void) {
 		return -4;
 	executing_t->state = PROCST_APTO;
 
-	next = get_most_prio_t();
-
-	if(FirstFila2(&exec) != 0)
-	{
-		if(AppendFila2(&exec, next) != 0)
-			return -6;
-		next->state = PROCST_EXEC;
-	}
-	else
-		return -5;
+	next = exec_next();
 	
 	swapcontext(&executing_t->context, &next->context);
 
