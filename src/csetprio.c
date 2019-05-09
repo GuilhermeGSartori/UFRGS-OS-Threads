@@ -6,7 +6,7 @@
 #include "../include/support.h"
 #include "../include/cthread.h"
 #include "../include/cdata.h"
-#include "../include/result_code.h"   //precisa mudar para constants.h
+#include "../include/constants.h"   //precisa mudar para constants.h
 #include "../include/scheduler.h"
 
 #include <stdio.h>
