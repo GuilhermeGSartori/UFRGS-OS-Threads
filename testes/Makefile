@@ -34,11 +34,11 @@ all: Test_CThread
 
 Test_CThread:
 	@echo "Building tests..."
-	@$(COMPILER) -o $(MAIN_BINARY_DIR)/Test_CThread.exe $(PNPCUNIT_INCLUDE_DIR)/*.h $(TEST_INCLUDE_DIR)/*.h $(TEST_CONFIG_DIR)/*.h $(MAIN_INCLUDE_DIR)/*.h $(PNPCUNIT_SOURCE_DIR)/*.c $(TEST_SOURCE_DIR)/*.c $(TEST_CONFIG_DIR)/*.c $(MAIN_SOURCE_DIR)/*.c $(MAIN_BINARY_DIR)/support.o
+	@$(COMPILER) -std=c99 -o $(MAIN_BINARY_DIR)/Test_CThread.exe $(PNPCUNIT_INCLUDE_DIR)/*.h $(TEST_INCLUDE_DIR)/*.h $(TEST_CONFIG_DIR)/*.h $(MAIN_INCLUDE_DIR)/*.h $(PNPCUNIT_SOURCE_DIR)/*.c $(TEST_SOURCE_DIR)/*.c $(TEST_CONFIG_DIR)/*.c $(MAIN_SOURCE_DIR)/*.c $(MAIN_BINARY_DIR)/support.o
 
 Test_CThread_x64:
 	@echo "Building tests..."
-	@$(COMPILER) -o $(MAIN_BINARY_DIR)/Test_CThread.exe $(PNPCUNIT_INCLUDE_DIR)/*.h $(TEST_INCLUDE_DIR)/*.h $(TEST_CONFIG_DIR)/*.h $(MAIN_INCLUDE_DIR)/*.h $(PNPCUNIT_SOURCE_DIR)/*.c $(TEST_SOURCE_DIR)/*.c $(TEST_CONFIG_DIR)/*.c $(MAIN_SOURCE_DIR)/*.c
+	@$(COMPILER) -std=c99 -o $(MAIN_BINARY_DIR)/Test_CThread.exe $(PNPCUNIT_INCLUDE_DIR)/*.h $(TEST_INCLUDE_DIR)/*.h $(TEST_CONFIG_DIR)/*.h $(MAIN_INCLUDE_DIR)/*.h $(PNPCUNIT_SOURCE_DIR)/*.c $(TEST_SOURCE_DIR)/*.c $(TEST_CONFIG_DIR)/*.c $(MAIN_SOURCE_DIR)/*.c
 
 clean:
 	@echo "Cleaning tests..."
