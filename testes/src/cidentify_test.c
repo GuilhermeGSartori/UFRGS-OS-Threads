@@ -4,7 +4,7 @@
  * @author Renan Kummer
  */
 #include "../include/cidentify_test.h"
-#include "../../include/result_code.h"
+#include "../../include/constants.h"
 #include "../../include/cthread.h"
 #include <stdlib.h>
 #include <stdio.h>
