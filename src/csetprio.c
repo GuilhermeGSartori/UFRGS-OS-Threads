@@ -1,23 +1,15 @@
 /**
  * Implementation of CThread's csetprio function, including supporting functions.
- * 
- * @author Renan Kummer
+ *
+ * @author Marlize Ramos
  */
 #include "../include/support.h"
 #include "../include/cthread.h"
 #include "../include/cdata.h"
+#include "../include/result_code.h"   //precisa mudar para constants.h
+#include "../include/scheduler.h"
 
 #include <stdio.h>
-
-// ======================================================================================
-//                            SUPPORT FUNCTIONS - DECLARATION
-// ======================================================================================
-
-/**
- * Sample of support function. It uses csetprio_ prefix to avoid naming conflicts.
- */ 
-void csetprio_hello_world();
-
 
 // ======================================================================================
 //                                        CSETPRIO
@@ -25,21 +17,29 @@ void csetprio_hello_world();
 
 /**
  * Modify the priority of a thread.
- * 
- * @param tid  Identifier of thread to modify.
+ *
+ * @param tid  Identifier of thread to modify --> always NULL
  * @param prio Priority to set.
  * @return 0 if successful, -1 otherwise.
  */
 int csetprio(int tid, int prio) {
-	return -1;
+    if(prio < 0 || prio > 2)
+        return CTHREAD_FAILURE;
+
+    if(init_scheduler() != 0)
+        return CTHREAD_FAILURE;
+
+    TCB_t *executing_t = which_executing_t();
+    if(executing_t == NULL)
+        return CTHREAD_FAILURE;
+
+    else
+    {
+        executing_t->prio = prio;
+        executing_t->state = PROCST_EXEC;
+
+        return CTHREAD_SUCCESS;
+    }
 }
 
 
-// ======================================================================================
-//                           SUPPORT FUNCTIONS - IMPLEMENTATION
-// ======================================================================================
-
-void csetprio_hello_world()
-{
-    printf("Hello world!\n");
-}
