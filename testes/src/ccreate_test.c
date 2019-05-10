@@ -57,7 +57,7 @@ void teardown_CCreate()
 
 pnpcunit_Bool test_CCreate()
 {
-	
+	return pnpcunit_TRUE;
 }
 
 
