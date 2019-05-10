@@ -26,6 +26,7 @@ FILA2 ready_mid;
 FILA2 ready_high;
 FILA2 block_join;
 FILA2 exec;
+FILA2 tid_list;
 
 int init_scheduler()
 {
@@ -58,6 +59,8 @@ int init_queues()
 			return -4;
 		if(CreateFila2(&exec) != 0)
 			return -5;
+		if(CreateFila2(&tid_list) != 0)
+			return -6;
 	
 
 		__queu_init = 1;
@@ -80,8 +83,8 @@ int init_main()
 		 */
 		getcontext(end_context);
 		end_context->uc_link = NULL;
-		end_context->uc_stack.ss_sp = (char*)malloc(20000);
-		end_context->uc_stack.ss_size = 20000;
+		end_context->uc_stack.ss_sp = (char*)malloc(STACK_SIZE);
+		end_context->uc_stack.ss_size = STACK_SIZE;
 		makecontext(end_context, (void(*)(void))finish_thread, 0);
 
 		/*
@@ -95,10 +98,13 @@ int init_main()
 		main_t->state = PROCST_EXEC;
 		main_t->prio = 2;
 		
+		if(AppendFila2(&tid_list, &main_t->tid) != 0)
+			return -1;
+
 		getcontext(&(main_t->context));
 		main_t->context.uc_link = NULL;
-		main_t->context.uc_stack.ss_sp = (char*)malloc(20000);
-		main_t->context.uc_stack.ss_size = 20000;
+		main_t->context.uc_stack.ss_sp = (char*)malloc(STACK_SIZE);
+		main_t->context.uc_stack.ss_size = STACK_SIZE;
 		
 		
 		if(AppendFila2(&exec, main_t) != 0)
@@ -128,19 +134,12 @@ int finish_thread()
 	if(check_if_join(executing->tid) != 0)
 		return -3;
 	
+	delete_tid_list(executing->tid);
+
 	free(executing->context.uc_stack.ss_sp);
 	free(executing);
 	
-	next = get_most_prio_t();
-
-	if(next == NULL)
-		return 0;
-
-	next->state = PROCST_EXEC;
-
-	if(AppendFila2(&exec, next) != 0)
-		return -4;	
-
+	next = exec_next();
 
 	setcontext(&next->context);
 	
@@ -275,4 +274,54 @@ int check_if_join(int tid)
 	}
 
 	return 0;
+}
+
+int delete_tid_list(int tid)
+{
+	int queue_end;
+	int *current;
+
+	queue_end = FirstFila2(&tid_list);
+
+	while(queue_end == 0)
+	{
+		current = GetAtIteratorFila2(&tid_list);
+		if(*current == tid)
+		{
+			if(DeleteAtIteratorFila2(&tid_list) != 0)
+				return -2;
+			queue_end = 1;
+		}
+		else
+		{
+			if(NextFila2(&tid_list) != 0)
+				queue_end = -1;	
+		}
+	}
+    if(queue_end == -1)
+    	return -10;
+	return 0;
+}
+
+int search_tid(int tid)
+{
+	int queue_end;
+	int *current;
+
+	queue_end = FirstFila2(&tid_list);
+	while(queue_end == 0)
+	{
+		current = GetAtIteratorFila2(&tid_list);
+		if(*current == tid)
+		{
+			return 0;
+		}
+		else
+		{
+			if(NextFila2(&tid_list) != 0)
+				return -1;	
+		}
+	}
+
+	return -1;
 }
