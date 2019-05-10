@@ -121,7 +121,7 @@ ResultCode cwait_run_highest_priority_thread()
      
         next_thread->state = PROCST_EXEC;
      
-        //swapcontext(&current_thread->context, &next_thread->context);   
+        swapcontext(&current_thread->context, &next_thread->context);   
         return CTHREAD_SUCCESS;
     }
 
