@@ -26,7 +26,7 @@
  */
 void* test_CWait_Function1()
 {
-	if (-1 == semaphore1->count))
+	if (-1 == semaphore1->count)
 		has_passed = pnpcunit_FALSE;
 
 	//if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, FirstFila2(semaphore1->fila)))
