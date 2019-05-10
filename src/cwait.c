@@ -120,7 +120,7 @@ ResultCode cwait_run_highest_priority_thread()
     {
         next_thread->state = PROCST_EXEC;
 
-        if (current_thread == NULL || next_thread == NULL)
+        if (current_thread->context == NULL || next_thread->context == NULL)
             printf("Oops... It's null.\n");
 
         //swapcontext(&current_thread->context, &next_thread->context);
