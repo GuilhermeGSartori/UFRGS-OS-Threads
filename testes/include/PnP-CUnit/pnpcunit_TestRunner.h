@@ -56,20 +56,4 @@ void pnpcunit_run_all_test_suites(pnpcunit_TestRunner* runner);
 void pnpcunit_display_results(pnpcunit_ResultView result_type, pnpcunit_TestRunner *runner);
 
 
-/**
- * Function for thread 1.
- */
-void* test_CWait_Function1();
-
-/**
- * Function for thread 2.
- */
-void* test_CWait_Function2();
-
-/**
- * Function for thread 3.
- */
-void* test_CWait_Function3();
-
-
 #endif // PNPCUNIT_INCLUDE_TESTRUNNER_H
