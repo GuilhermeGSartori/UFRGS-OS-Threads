@@ -74,15 +74,15 @@ void test_CWait_Explicit()
 	ccreate(&test_CWait_Function3, NULL, LOW);
 
     cwait(semaphore1);
-	//cwait(semaphore1);
-	//cwait(semaphore1);
+	cwait(semaphore1);
+	cwait(semaphore1);
 
-	//if (!pnpcunit_assert_equal_int(-2, semaphore1->count))
-	//	has_passed = pnpcunit_FALSE;
+	if (!pnpcunit_assert_equal_int(-2, semaphore1->count))
+		has_passed = pnpcunit_FALSE;
 
-	//FirstFila2(semaphore1->fila);
-	//if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, NextFila2(semaphore1->fila)))
-	//	has_passed = pnpcunit_FALSE;
+	FirstFila2(semaphore1->fila);
+	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, NextFila2(semaphore1->fila)))
+		has_passed = pnpcunit_FALSE;
 
 	if (has_passed)
         printf("PASS!\n");
