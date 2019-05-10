@@ -27,7 +27,7 @@ csem_t* semaphore2;
 /**
  * Function for thread 1.
  */
-void* test_CWait_Function1()
+void* test_CSignal_Function1()
 {
 	return NULL;
 }
@@ -35,7 +35,7 @@ void* test_CWait_Function1()
 /**
  * Function for thread 2.
  */
-void* test_CWait_Function2()
+void* test_CSignal_Function2()
 {
 	cwait(semaphore2);
 	csignal(semaphore2);
@@ -52,7 +52,7 @@ void* test_CWait_Function2()
 /**
  * Function for thread 3.
  */
-void* test_CWait_Function3()
+void* test_CSignal_Function3()
 {
 	cyield();
 
@@ -130,7 +130,7 @@ void teardown_CSignal()
 
 pnpcunit_Bool test_CSignal_SingleCall()
 {
-	ccreate(&test_CWait_Function1, NULL, HIGH);
+	ccreate(&test_CSignal_Function1, NULL, HIGH);
 
 	cwait(semaphore1);
 	cwait(semaphore1);
@@ -162,9 +162,9 @@ pnpcunit_Bool test_CSignal_SingleCall()
 
 pnpcunit_Bool test_CSignal_Priorities()
 {
-	ccreate(&test_CWait_Function2, NULL, HIGH);
-	ccreate(&test_CWait_Function3, NULL, MEDIUM);
-	ccreate(&test_CWait_Function1, NULL, LOW);
+	ccreate(&test_CSignal_Function2, NULL, HIGH);
+	ccreate(&test_CSignal_Function3, NULL, MEDIUM);
+	ccreate(&test_CSignal_Function1, NULL, LOW);
 
 	cwait(semaphore2);
 	cwait(semaphore2);
