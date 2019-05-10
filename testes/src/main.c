@@ -11,6 +11,7 @@
 #include "../../include/support.h"
 #include "../../include/cdata.h"
 #include "../include/cwait_test.h"
+#include <stdlib.h>
 #include <stdio.h>
 
 
