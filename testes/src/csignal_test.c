@@ -57,7 +57,7 @@ void test_CWait_Function3()
 	if (!pnpcunit_assert_equal_int(-2, semaphore2->count))
 		has_passed = pnpcunit_FALSE;
 
-	FirstFila2(semaphore2->fila)
+	FirstFila2(semaphore2->fila);
 	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, NextFila2(semaphore2)))
 		has_passed = pnpcunit_FALSE;
 
@@ -126,7 +126,7 @@ void teardown_CSignal()
 
 pnpcunit_Bool test_CSignal_SingleCall()
 {
-	ccreate(test_CWait_Function1, NULL, HIGH);
+	ccreate(&test_CWait_Function1, NULL, HIGH);
 
 	cwait(semaphore1);
 	cwait(semaphore1);
@@ -158,9 +158,9 @@ pnpcunit_Bool test_CSignal_SingleCall()
 
 pnpcunit_Bool test_CSignal_Priorities()
 {
-	ccreate(test_CWait_Function2, NULL, HIGH);
-	ccreate(test_CWait_Function3, NULL, MEDIUM);
-	ccreate(test_CWait_Function1, NULL, LOW);
+	ccreate(&test_CWait_Function2, NULL, HIGH);
+	ccreate(&test_CWait_Function3, NULL, MEDIUM);
+	ccreate(&test_CWait_Function1, NULL, LOW);
 
 	cwait(semaphore2);
 	cwait(semaphore2);
