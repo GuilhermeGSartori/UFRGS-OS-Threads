@@ -67,6 +67,9 @@ void test_CWait_Explicit()
 {
     semaphore1 = (csem_t*) malloc(sizeof(csem_t));
     semaphore2 = (csem_t*) malloc(sizeof(csem_t));
+    if (semaphore1 == NULL)
+        printf("Malloc issue!]n");
+    
     csem_init(semaphore1, 2);
     csem_init(semaphore2, 2);
 
