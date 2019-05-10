@@ -8,7 +8,6 @@
 
 #include "./PnP-CUnit/PnPCUnit.h"
 
-
 /**
  * Configure test suite to be run.
  *   - Add Set Up, Before Each, After Each and Teardown functions.
