@@ -4,6 +4,7 @@
  * @author Renan Kummer
  */
 #include "../../include/PnP-CUnit/pnpcunit_TestRunner.h"
+#include "../../include/cwait_test.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -173,6 +174,13 @@ void increase_runner_capacity(pnpcunit_TestRunner *runner)
 
 pnpcunit_Bool run_single_test_suite(pnpcunit_TestSuite *suite)
 {
+	if (suite->name == "CThread.CWait")
+	{
+		ccreate(test_CWait_Function1, NULL, HIGH);
+		ccreate(test_CWait_Function2, NULL, MEDIUM);
+		ccreate(test_CWait_Function3, NULL, LOW);
+	}
+
 	if (suite->set_up != NULL)
 		suite->set_up();
 
