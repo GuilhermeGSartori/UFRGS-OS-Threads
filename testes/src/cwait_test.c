@@ -176,9 +176,9 @@ pnpcunit_TestSuite* configure_suite_CWait()
 	suite->teardown    = teardown_CWait;
 
 	// -- ADD TEST CASES BELOW: --
-	//pnpcunit_add_test_case(suite, test_CWait_AvailableResource, "AvailableResource");
+	pnpcunit_add_test_case(suite, test_CWait_AvailableResource, "AvailableResource");
 	//pnpcunit_add_test_case(suite, test_CWait_BusyResource, "BusyResource");
-	pnpcunit_add_test_case(suite, test_CWait_NullParameters, "NullParameters");
+	//pnpcunit_add_test_case(suite, test_CWait_NullParameters, "NullParameters");
 
 	return suite;
 }
