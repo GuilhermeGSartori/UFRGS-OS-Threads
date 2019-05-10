@@ -9,6 +9,7 @@
 #include "../../include/cthread.h"
 #include "../../include/support.h"
 #include "../../include/cdata.h"
+#include <stdlib.h>
 
 
 // =============================================================================================
