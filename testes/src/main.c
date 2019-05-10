@@ -26,8 +26,8 @@
  */
 void* test_CWait_Function1()
 {
-	//if (!pnpcunit_assert_equal_int(-1, semaphore1->count))
-	//	has_passed = pnpcunit_FALSE;
+	if (!pnpcunit_assert_equal_int(-1, semaphore1->count))
+		has_passed = pnpcunit_FALSE;
 
 	//if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, FirstFila2(semaphore1->fila)))
 	//	has_passed = pnpcunit_FALSE;
@@ -64,8 +64,8 @@ void test_CWait_Explicit()
 {
     semaphore1 = (csem_t*) malloc(sizeof(csem_t));
     semaphore2 = (csem_t*) malloc(sizeof(csem_t));
-    //csem_init(semaphore1, 2);
-    //csem_init(semaphore2, 2);
+    csem_init(semaphore1, 2);
+    csem_init(semaphore2, 2);
 
     test_CWait_Function1();
 	//ccreate(&test_CWait_Function1, NULL, HIGH);
