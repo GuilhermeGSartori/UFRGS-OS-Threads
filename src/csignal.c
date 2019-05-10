@@ -54,6 +54,9 @@ int csignal(csem_t *sem)
 	if (sem == NULL || sem->count > 0)
 		return CTHREAD_FAILURE;
 
+	if(init_scheduler() != 0)
+        return CTHREAD_FAILURE;
+
 	sem->count++;
 	if (sem->count <= 0)
 	{

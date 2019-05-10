@@ -63,6 +63,9 @@ int cwait(csem_t *sem)
     if (sem == NULL)
         return CTHREAD_FAILURE;
 
+    if(init_scheduler() != 0)
+        return CTHREAD_FAILURE;
+
     sem -> count--;
     if (sem->count <= 0)
     {
