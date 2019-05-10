@@ -26,12 +26,12 @@ int csem_init(csem_t *sem, int count)
     if (sem == NULL || count <= 0)
         return CTHREAD_FAILURE;
 
-    //if(init_scheduler() != 0)
-     //   return CTHREAD_FAILURE;
-
-    int result_code = CreateFila2(sem->fila);
-    if (result_code != CTHREAD_SUCCESS)
+    if(init_scheduler() != 0)
         return CTHREAD_FAILURE;
+
+    //int result_code = CreateFila2(sem->fila);
+    //if (result_code != CTHREAD_SUCCESS)
+    //    return CTHREAD_FAILURE;
     
     sem->count = count;
 	return CTHREAD_SUCCESS;
