@@ -74,7 +74,7 @@ void test_CWait_Explicit()
 	ccreate(&test_CWait_Function3, NULL, LOW);
 
     cwait(semaphore1);
-	cwait(semaphore1);
+	//cwait(semaphore1);
 	//cwait(semaphore1);
 
 	if (!pnpcunit_assert_equal_int(-2, semaphore1->count))
