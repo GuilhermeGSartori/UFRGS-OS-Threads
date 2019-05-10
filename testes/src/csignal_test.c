@@ -29,7 +29,7 @@ csem_t* semaphore2;
  */
 void* test_CWait_Function1()
 {
-	// Empty body.
+	return NULL;
 }
 
 /**
@@ -45,6 +45,8 @@ void* test_CWait_Function2()
 
 	if (!pnpcunit_assert_not_equal_int(CTHREAD_SUCCESS, FirstFila2(semaphore2->fila)))
 		has_passed = pnpcunit_FALSE;
+
+	return NULL;
 }
 
 /**
@@ -68,6 +70,8 @@ void* test_CWait_Function3()
 
 	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, FirstFila2(semaphore2->fila)))
 		has_passed = pnpcunit_FALSE;
+
+	return NULL;
 }
 
 // =============================================================================================
