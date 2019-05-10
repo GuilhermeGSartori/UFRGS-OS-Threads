@@ -63,17 +63,17 @@ void teardown_CSemInit()
 //                                          TEST CASES
 // =============================================================================================
 
-pnpcunit_Bool test_CSemInit_CreateValidSemaphore()
+pnpcunit_Bool test_CSemInit_ValidSemaphore()
 {
 	return csem_init(semaphore, 3) == CTHREAD_SUCCESS;
 }
 
-pnpcunit_Bool test_CSemInit_CreateSemaphoreNullParameters()
+pnpcunit_Bool test_CSemInit_NullParameters()
 {
 	return csem_init(NULL, 3) == CTHREAD_FAILURE;
 }
 
-pnpcunit_Bool test_CSemInit_CreateSemaphoreLowCount()
+pnpcunit_Bool test_CSemInit_LowCount()
 {
 	return (csem_init(semaphore, 0) == CTHREAD_FAILURE) && (csem_init(semaphore, -1) == CTHREAD_FAILURE);
 }
@@ -93,9 +93,9 @@ pnpcunit_TestSuite* configure_suite_CSemInit()
 	suite->teardown    = teardown_CSemInit;
 
 	// -- ADD TEST CASES BELOW: --
-	pnpcunit_add_test_case(suite, test_CSemInit_CreateValidSemaphore, "CreateValidSemaphore");
-	pnpcunit_add_test_case(suite, test_CSemInit_CreateSemaphoreNullParameters, "CreateValidSemaphore");
-	pnpcunit_add_test_case(suite, test_CSemInit_CreateSemaphoreLowCount, "CreateValidSemaphore");
+	pnpcunit_add_test_case(suite, test_CSemInit_ValidSemaphore, "ValidSemaphore");
+	pnpcunit_add_test_case(suite, test_CSemInit_NullParameters, "NullParameters");
+	pnpcunit_add_test_case(suite, test_CSemInit_LowCount, "LowCount");
 
 	return suite;
 }
