@@ -69,12 +69,11 @@ void test_CWait_Explicit()
     csem_init(semaphore1, 2);
     csem_init(semaphore2, 2);
 
-    test_CWait_Function1();
-	//ccreate(&test_CWait_Function1, NULL, HIGH);
-	//ccreate(&test_CWait_Function2, NULL, MEDIUM);
-	//ccreate(&test_CWait_Function3, NULL, LOW);
+	ccreate(&test_CWait_Function1, NULL, HIGH);
+	ccreate(&test_CWait_Function2, NULL, MEDIUM);
+	ccreate(&test_CWait_Function3, NULL, LOW);
 
-    //cwait(semaphore1);
+    cwait(semaphore1);
 	//cwait(semaphore1);
 	//cwait(semaphore1);
 
