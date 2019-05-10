@@ -70,8 +70,8 @@ void test_CWait_Explicit()
     if (semaphore1 == NULL)
         printf("Malloc issue!]n");
     
-    csem_init(semaphore1, 2);
-    csem_init(semaphore2, 2);
+    //csem_init(semaphore1, 2);
+    //csem_init(semaphore2, 2);
 
     //test_CWait_Function1();
 	//ccreate(&test_CWait_Function1, NULL, HIGH);
