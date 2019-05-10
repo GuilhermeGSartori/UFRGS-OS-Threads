@@ -7,6 +7,10 @@
 #define UFRGS_OS_THREADS_TESTES_INCLUDE_CWAIT_TEST_H
 
 #include "./PnP-CUnit/PnPCUnit.h"
+#include "../../include/constants.h"
+#include "../../include/cthread.h"
+#include "../../include/support.h"
+#include "../../include/cdata.h"
 
 pnpcunit_Bool has_passed;
 csem_t* semaphore1;
