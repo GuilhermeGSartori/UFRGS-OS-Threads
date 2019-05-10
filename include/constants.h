@@ -21,4 +21,5 @@ typedef enum Priority
     HIGH   = 2
 } Priority;
 
+
 #endif // UFRGS_OS_THREADS_INCLUDE_RESULT_CODE_H

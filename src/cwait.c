@@ -81,6 +81,7 @@ int cwait(csem_t *sem) {
 ResultCode cwait_insert_to_queue(csem_t *sem)
 {
     TCB_t* current_thread = which_executing_t();
+    current_thread->state = PROCST_BLOQ;
 
     if (AppendFila2(sem->fila, current_thread) == CTHREAD_SUCCESS)
         return CTHREAD_SUCCESS;
@@ -103,14 +104,17 @@ ResultCode cwait_clear_exec()
 
 ResultCode cwait_run_highest_priority_thread()
 {
+
+    TCB_t* current_thread = which_executing_t();
     cwait_clear_exec();
     
     TCB_t* next_thread = get_most_prio_t();
     if (AppendFila2(&exec, next_thread) == CTHREAD_SUCCESS)
     {
-        // TODO: Change context!!
+     
         next_thread->state = PROCST_EXEC;
-        
+     
+        swapcontext(&current_thread->context, &next_thread->context);   
         return CTHREAD_SUCCESS;
     }
 

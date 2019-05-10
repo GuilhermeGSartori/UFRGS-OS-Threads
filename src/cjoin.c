@@ -12,14 +12,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// ======================================================================================
-//                            SUPPORT FUNCTIONS - DECLARATION
-// ======================================================================================
-
-/**
- * Sample of support function. It uses cjoin_ prefix to avoid naming conflicts.
- */ 
-void cjoin_hello_world();
 
 
 // ======================================================================================
@@ -42,34 +34,26 @@ int cjoin(int tid) {
 	if(init_scheduler() != 0)
 		return -1;
 
-	new_join->tid = tid;
+	if(search_tid(tid) == 0)
+	{	
+		new_join->tid = tid;
 
-	if(FirstFila2(&exec) != 0)
-		return -2;
-	executing_t = which_executing_t();
+		if(FirstFila2(&exec) != 0)
+			return -2;
+		executing_t = which_executing_t();
 
-	if(DeleteAtIteratorFila2(&exec) != 0)
-		return -3;
-	executing_t->state = PROCST_BLOQ;
+		if(DeleteAtIteratorFila2(&exec) != 0)
+			return -3;
+		executing_t->state = PROCST_BLOQ;
 
-	new_join->blocked_t = executing_t;
+		new_join->blocked_t = executing_t;
 
-	if(join_block_t(new_join) != 0)
-		return -4;
+		if(join_block_t(new_join) != 0)
+			return -4;
 
-	next = exec_next();
+		next = exec_next();
 	
-	swapcontext(&executing_t->context, &next->context);
-
+		swapcontext(&executing_t->context, &next->context);
+	}
 	return 0;
-}
-
-
-// ======================================================================================
-//                           SUPPORT FUNCTIONS - IMPLEMENTATION
-// ======================================================================================
-
-void cjoin_hello_world()
-{
-    printf("Hello world!\n");
 }
