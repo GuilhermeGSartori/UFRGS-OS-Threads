@@ -146,7 +146,8 @@ pnpcunit_Bool test_CWait_BusyResource()
 	if (!pnpcunit_assert_equal_int(-2, semaphore1->count))
 		has_passed = pnpcunit_FALSE;
 
-	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, NextFila2(FirstFila2(semaphore1->fila))))
+	FirstFila2(semaphore1->fila);
+	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, NextFila2(semaphore1->fila)))
 		has_passed = pnpcunit_FALSE;
 
 	return has_passed;
