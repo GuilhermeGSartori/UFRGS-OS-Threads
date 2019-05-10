@@ -32,7 +32,7 @@ void configure_pnpcunit(pnpcunit_TestRunner *runner)
 	pnpcunit_add_test_suite(runner, configure_suite_CSemInit);
 	pnpcunit_add_test_suite(runner, configure_suite_CSetprio);
 	//pnpcunit_add_test_suite(runner, configure_suite_CSignal);
-	//pnpcunit_add_test_suite(runner, configure_suite_CWait);
+	pnpcunit_add_test_suite(runner, configure_suite_CWait);
 	pnpcunit_add_test_suite(runner, configure_suite_CYield);
 	pnpcunit_add_test_suite(runner, configure_suite_Scheduler);	
 }
