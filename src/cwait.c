@@ -118,10 +118,12 @@ ResultCode cwait_run_highest_priority_thread()
     TCB_t* next_thread = get_most_prio_t();
     if (AppendFila2(&exec, next_thread) == CTHREAD_SUCCESS)
     {
-     
         next_thread->state = PROCST_EXEC;
-     
-        //swapcontext(&current_thread->context, &next_thread->context);   
+
+        if (current_thread == NULL || next_thread == NULL)
+            printf("Oops... It's null.\n");
+            
+        swapcontext(&current_thread->context, &next_thread->context);
         return CTHREAD_SUCCESS;
     }
 
