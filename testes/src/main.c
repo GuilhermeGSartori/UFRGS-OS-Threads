@@ -64,6 +64,8 @@ void test_CWait_Explicit()
 {
     semaphore1 = (csem_t*) malloc(sizeof(csem_t));
     semaphore2 = (csem_t*) malloc(sizeof(csem_t));
+    csem_init(semaphore1, 2);
+    csem_init(semaphore2, 2);
 
     test_CWait_Function1();
 	//ccreate(&test_CWait_Function1, NULL, HIGH);
