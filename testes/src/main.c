@@ -27,8 +27,8 @@
 void* test_CWait_Function1()
 {
 	printf("Hello ");
-    if (semaphore1 == NULL)
-        printf("EIta!");
+    //if (semaphore1 == NULL)
+    //    printf("EIta!");
     
     //printf("%d\n", semaphore1->count);
 
