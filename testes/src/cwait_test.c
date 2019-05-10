@@ -75,10 +75,10 @@ void* test_CWait_Function3()
  * OPTIONAL: Implement if it fits your case.
  */
 void set_up_CWait()
-{/*
+{
 	ccreate(test_CWait_Function1, NULL, HIGH);
 	ccreate(test_CWait_Function2, NULL, MEDIUM);
-	ccreate(test_CWait_Function3, NULL, LOW);*/
+	ccreate(test_CWait_Function3, NULL, LOW);
 }
 
 /**
