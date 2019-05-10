@@ -60,9 +60,9 @@ void* test_CWait_Function3()
 
 void test_CWait_Explicit()
 {
-	ccreate(test_CWait_Function1, NULL, HIGH);
-	ccreate(test_CWait_Function2, NULL, MEDIUM);
-	ccreate(test_CWait_Function3, NULL, LOW);
+	ccreate(&test_CWait_Function1, NULL, HIGH);
+	ccreate(&test_CWait_Function2, NULL, MEDIUM);
+	ccreate(&test_CWait_Function3, NULL, LOW);
 
     cwait(semaphore1);
 	cwait(semaphore1);
