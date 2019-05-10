@@ -29,9 +29,10 @@ int csem_init(csem_t *sem, int count)
     if(init_scheduler() != 0)
         return CTHREAD_FAILURE;
 
+    sem->fila = (PFILA2) malloc(sizeof(FILA2));
     int result_code = CreateFila2(sem->fila);
-    //if (result_code != CTHREAD_SUCCESS)
-    //    return CTHREAD_FAILURE;
+    if (result_code != CTHREAD_SUCCESS)
+        return CTHREAD_FAILURE;
     
     sem->count = count;
 	return CTHREAD_SUCCESS;
