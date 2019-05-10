@@ -73,8 +73,8 @@ int cwait(csem_t *sem)
         if (cwait_insert_to_queue(sem) == CTHREAD_FAILURE)
             return CTHREAD_FAILURE;
 
-       // if (cwait_run_highest_priority_thread() == CTHREAD_FAILURE)
-         //   return CTHREAD_FAILURE;
+        if (cwait_run_highest_priority_thread() == CTHREAD_FAILURE)
+            return CTHREAD_FAILURE;
     }
 
     return CTHREAD_SUCCESS;
@@ -121,7 +121,7 @@ ResultCode cwait_run_highest_priority_thread()
      
         next_thread->state = PROCST_EXEC;
      
-        swapcontext(&current_thread->context, &next_thread->context);   
+        //swapcontext(&current_thread->context, &next_thread->context);   
         return CTHREAD_SUCCESS;
     }
 
