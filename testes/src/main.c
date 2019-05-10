@@ -10,11 +10,9 @@
 #include "../../include/cthread.h"
 #include "../../include/support.h"
 #include "../../include/cdata.h"
+#include "../include/cwait_test.h"
 
 
-pnpcunit_Bool has_passed;
-csem_t* semaphore1;
-csem_t* semaphore2;
 
 
 // =============================================================================================
