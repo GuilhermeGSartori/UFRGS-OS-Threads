@@ -122,8 +122,8 @@ ResultCode cwait_run_highest_priority_thread()
 
         if (current_thread == NULL || next_thread == NULL)
             printf("Oops... It's null.\n");
-            
-        swapcontext(&current_thread->context, &next_thread->context);
+
+        //swapcontext(&current_thread->context, &next_thread->context);
         return CTHREAD_SUCCESS;
     }
 
