@@ -40,10 +40,10 @@ void test_CWait_Function2()
 	csignal(semaphore2);
 
 	if (!pnpcunit_assert_equal_int(0, semaphore2->count))
-		return pnpcunit_FALSE;
+		has_passed = pnpcunit_FALSE;
 
 	if (!pnpcunit_assert_not_equal_int(CTHREAD_SUCCESS, FirstFila2(semaphore2->fila)))
-		return pnpcunit_FALSE;
+		has_passed = pnpcunit_FALSE;
 }
 
 /**
@@ -54,18 +54,18 @@ void test_CWait_Function3()
 	cyield();
 
 	if (!pnpcunit_assert_equal_int(-2, semaphore2->count))
-		return pnpcunit_FALSE;
+		has_passed = pnpcunit_FALSE;
 
 	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, NextFila2(FirstFila2(semaphore2->fila))))
-		return pnpcunit_FALSE;
+		has_passed = pnpcunit_FALSE;
 
 	csignal();
 
 	if (!pnpcunit_assert_equal_int(-1, semaphore2->count))
-		return pnpcunit_FALSE;
+		has_passed = pnpcunit_FALSE;
 
 	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, FirstFila2(semaphore2->fila)))
-		return pnpcunit_FALSE;
+		has_passed = pnpcunit_FALSE;
 }
 
 // =============================================================================================
@@ -171,7 +171,7 @@ pnpcunit_Bool test_CSignal_Priorities()
 	if (!pnpcunit_assert_not_equal_int(CTHREAD_SUCCESS, FirstFila2(semaphore2->fila)))
 		return pnpcunit_FALSE;
 
-	return pnpcunit_TRUE;
+	return has_passed;
 }
 
 pnpcunit_Bool test_CSignal_NullParameters()
@@ -197,7 +197,9 @@ pnpcunit_TestSuite* configure_suite_CSignal()
 	suite->teardown    = teardown_CSignal;
 
 	// -- ADD TEST CASES BELOW: --
-	pnpcunit_add_test_case(suite, test_CSignal_Sample1, "Sample");
+	pnpcunit_add_test_case(suite, test_CSignal_SingleCall, "SingleCall");
+	pnpcunit_add_test_case(suite, test_CSignal_Priorities, "Priorities");
+	pnpcunit_add_test_case(suite, test_CSignal_NullParameters, "NullParameters");
 
 	return suite;
 }

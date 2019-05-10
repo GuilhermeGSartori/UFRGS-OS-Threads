@@ -142,6 +142,8 @@ pnpcunit_Bool test_CWait_BusyResource()
 
 	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, NextFila2(FirstFila2(semaphore1->fila))))
 		has_passed = pnpcunit_FALSE;
+
+	return has_passed;
 }
 
 pnpcunit_Bool test_CWait_NullParameters()
