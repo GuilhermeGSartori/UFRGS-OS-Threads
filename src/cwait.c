@@ -73,8 +73,8 @@ int cwait(csem_t *sem)
         if (cwait_insert_to_queue(sem) == CTHREAD_FAILURE)
             return CTHREAD_FAILURE;
 
-        if (cwait_run_highest_priority_thread() == CTHREAD_FAILURE)
-            return CTHREAD_FAILURE;
+       // if (cwait_run_highest_priority_thread() == CTHREAD_FAILURE)
+         //   return CTHREAD_FAILURE;
     }
 
     return CTHREAD_SUCCESS;
