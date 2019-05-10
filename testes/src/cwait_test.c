@@ -87,13 +87,13 @@ void set_up_CWait()
  * OPTIONAL: Implement if it fits your case.
  */
 void before_each_CWait()
-{
+{/*
 	semaphore1 = (csem_t*) malloc(sizeof(csem_t));
 	semaphore2 = (csem_t*) malloc(sizeof(csem_t));
 
 	csem_init(semaphore1, 2);
 
-	has_passed = pnpcunit_TRUE;
+	has_passed = pnpcunit_TRUE;*/
 }
 
 /**
@@ -102,9 +102,9 @@ void before_each_CWait()
  * OPTIONAL: Implement if it fits your case.
  */
 void after_each_CWait()
-{
+{/*
 	free(semaphore1);
-	free(semaphore2);
+	free(semaphore2);*/
 }
 
 /**
