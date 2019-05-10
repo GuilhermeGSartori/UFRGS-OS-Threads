@@ -75,7 +75,7 @@ void test_CWait_Explicit()
 
     cwait(semaphore1);
 	cwait(semaphore1);
-	cwait(semaphore1);
+	//cwait(semaphore1);
 
 	if (!pnpcunit_assert_equal_int(-2, semaphore1->count))
 		has_passed = pnpcunit_FALSE;
