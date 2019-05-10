@@ -8,6 +8,7 @@
 #include "../../include/cthread.h"
 #include "../../include/support.h"
 #include "../../include/cdata.h"
+#include <stdlib.h>
 
 
 // =============================================================================================
@@ -56,10 +57,11 @@ void test_CWait_Function3()
 	if (!pnpcunit_assert_equal_int(-2, semaphore2->count))
 		has_passed = pnpcunit_FALSE;
 
-	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, NextFila2(FirstFila2(semaphore2->fila))))
+	FirstFila2(semaphore2->fila)
+	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, NextFila2(semaphore2)))
 		has_passed = pnpcunit_FALSE;
 
-	csignal();
+	csignal(semaphore2);
 
 	if (!pnpcunit_assert_equal_int(-1, semaphore2->count))
 		has_passed = pnpcunit_FALSE;
@@ -93,7 +95,7 @@ void before_each_CSignal()
 	csem_init(semaphore1, 1);
 	csem_init(semaphore2, 1);
 
-	has_passed = true;
+	has_passed = pnpcunit_TRUE;
 }
 
 /**
