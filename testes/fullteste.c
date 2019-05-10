@@ -58,7 +58,7 @@ static void *ccreate_join_middle()
 
 
 
-int main()
+int fullteste_main()
 {
 
 	//cenários, coloca ccreate do bye world antes do ccreate hello world, muda output
