@@ -30,7 +30,7 @@ void* test_CWait_Function1()
 	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, FirstFila2(semaphore1->fila)))
 		has_passed = pnpcunit_FALSE;
 
-	//cwait(semaphore1);
+	cwait(semaphore1);
 
 	return NULL;
 }
@@ -60,13 +60,13 @@ void* test_CWait_Function3()
 
 void test_CWait_Explicit()
 {
-    semaphore1 = (sem_t*) malloc(sizeof(sem_t));
-    semaphore2 = (sem_t*) malloc(sizeof(sem_t));
+    semaphore1 = (csem_t*) malloc(sizeof(csem_t));
+    semaphore2 = (csem_t*) malloc(sizeof(csem_t));
 
     test_CWait_Function1();
-	//ccreate(&test_CWait_Function1, NULL, HIGH);
-	//ccreate(&test_CWait_Function2, NULL, MEDIUM);
-	//ccreate(&test_CWait_Function3, NULL, LOW);
+	ccreate(&test_CWait_Function1, NULL, HIGH);
+	ccreate(&test_CWait_Function2, NULL, MEDIUM);
+	ccreate(&test_CWait_Function3, NULL, LOW);
 
     cwait(semaphore1);
 	cwait(semaphore1);
