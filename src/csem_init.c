@@ -7,6 +7,7 @@
 #include "../include/support.h"
 #include "../include/cthread.h"
 #include "../include/cdata.h"
+#include "../include/scheduler.h"
 #include <stdlib.h>
 
 // ======================================================================================
