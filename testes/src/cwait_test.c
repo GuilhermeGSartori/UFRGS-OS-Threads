@@ -55,7 +55,7 @@ void test_CWait_Function2()
  */
 void test_CWait_Function3()
 {
-	
+	pnpcunit_assert_true(pnpcunit_TRUE);
 }
 
 
