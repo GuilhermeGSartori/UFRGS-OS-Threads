@@ -93,7 +93,7 @@ void before_each_CWait()
 
 	csem_init(semaphore1, 2);
 
-	has_passed = true;
+	has_passed = pnpcunit_TRUE;
 }
 
 /**
