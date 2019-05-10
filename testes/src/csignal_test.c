@@ -27,7 +27,7 @@ csem_t* semaphore2;
 /**
  * Function for thread 1.
  */
-void test_CWait_Function1()
+void* test_CWait_Function1()
 {
 	// Empty body.
 }
@@ -35,7 +35,7 @@ void test_CWait_Function1()
 /**
  * Function for thread 2.
  */
-void test_CWait_Function2()
+void* test_CWait_Function2()
 {
 	cwait(semaphore2);
 	csignal(semaphore2);
@@ -50,7 +50,7 @@ void test_CWait_Function2()
 /**
  * Function for thread 3.
  */
-void test_CWait_Function3()
+void* test_CWait_Function3()
 {
 	cyield();
 
@@ -58,7 +58,7 @@ void test_CWait_Function3()
 		has_passed = pnpcunit_FALSE;
 
 	FirstFila2(semaphore2->fila);
-	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, NextFila2(semaphore2)))
+	if (!pnpcunit_assert_equal_int(CTHREAD_SUCCESS, NextFila2(semaphore2->fila)))
 		has_passed = pnpcunit_FALSE;
 
 	csignal(semaphore2);
